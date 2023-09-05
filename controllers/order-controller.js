@@ -154,7 +154,7 @@ const placeOrder = async (req, res) => {
           if (wallet >= orderData.totalAmount) {
             await User.findOneAndUpdate(
               { _id: req.session.userId },
-              { $inc: { wallet: orderData.totalAmount } }
+              { $inc: { wallet: orderData.totalAmount * -1 } }
             );
             await CartDb.deleteOne({ user: req.session.userId });
             for (let i = 0; i < products.length; i++) {
@@ -421,15 +421,14 @@ const orderCancel = async (req, res) => {
         { $inc: { wallet: amount} }
       );
 
-      res.redirect("/listOrder");
+      res.json({success:true})
 
-    } else {
-      res.redirect("/listOrder");
-
-    }
+    } 
+      res.json({success:true})
+    
 
   } catch (error) {
-    console.log(error.message);
+    console.log(error);
   }
 };
 
@@ -476,45 +475,41 @@ const loadInvoice = async (req, res) => {
 };
 
 const returnProduct = async (req,res) => {
- console.log("entering to return product");
-  try {
-    try {
-      console.log(req.body);
-      const userId = req.session.userId
-      const id = req.body.orderid;
-      console.log(id,"orderidddddddddd");
-      const cancelReason = req.body.reason;
-      const cancelAmount = req.body.totalPrice;
-      const amount = parseInt(cancelAmount);
+  console.log("entering to return product");
+   try {
+     try {
+       console.log(req.body);
+       const userId = req.session.userId
+       const id = req.body.orderId;
+ 
+      
+       const updatedData = await orderdb.findOneAndUpdate(
+         { _id:id },
+         {
+           $set: {
+            status:'returned'
+           },
+         },
+         { new: true }
+       );
+         
+         const refunded = await User.updateOne(
+           { _id: req.session.userId },
+           { $inc: { wallet: updatedData.totalAmount } }
+         );
+   
+         res.json({success:true})
+   
+     } catch (error) {
+       console.log(error);
+     }
      
-      const updatedData = await orderdb.findOneAndUpdate(
-        { userId: userId, "items._id": id },
-        {
-          $set: {
-            "items.$.status": "returned",
-            "items.$.returnReason": cancelReason,
-          },
-        },
-        { new: true }
-      );
-        
-        const refunded = await User.updateOne(
-          { _id: req.session.userId },
-          { $inc: { wallet: amount } }
-        );
-  
-        res.redirect("/listOrder");
-  
-    } catch (error) {
-      console.log(error.message);
-    }
-    
-  } catch (error) { 
-    console.log(error.message);
-  }
-
-
-}
+   } catch (error) { 
+     console.log(error.message);
+   }
+ 
+ 
+ }
 module.exports = {
     loadCheckout,
     orderList,

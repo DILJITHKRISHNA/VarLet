@@ -81,7 +81,7 @@ user_route.get('/orderlist',auth.verify_user,userController.OrderList)
 user_route.get('/orderdetails',auth.verify_user,userController.orderDetail)
 user_route.post('/cancelOrder/:orderId',orderController.orderCancel)
 user_route.get("/invoice/:id",auth.verify_user,orderController.loadInvoice)
-user_route.get('/returnProduct',orderController.returnProduct)
+user_route.get('/returnorder',orderController.returnProduct)
 
 //coupon
 // user_route.post('/applyCoupon',couponController.verifyCoupon)
