@@ -99,7 +99,7 @@ const loadHome = async (req, res) => {
         },
       },
     ]);
-    console.log(totalSales,"total salessssssss");
+    console.log(totalSales,"total salesssssssss");
     let totalAmount = 0;
 
     if (totalSales.length > 0) {
@@ -208,7 +208,7 @@ const loadHome = async (req, res) => {
 
     if (totalSalesYear.length > 0) {
       totalAmountYear = totalSalesYear[0].totalYearAmount;
-      console.log("Total amount of delivered orders:", totalAmountYear);
+      console.log("Total amount of delivered  orders:", totalAmountYear);
     } else {
       console.log("No delivered orders found.");
     }
