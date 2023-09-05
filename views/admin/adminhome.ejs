@@ -1,0 +1,275 @@
+<%- include('../admin/partial/adminheader.ejs') %>
+
+<!-- Bootstrap JavaScript used for dropdown -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+
+<body>
+    <div class="container-fluid position-relative d-flex p-0">
+        <!-- Spinner Start -->
+        <div id="spinner" class="show bg-dark position-fixed translate-middle w-100 vh-100 top-50 start-50 d-flex align-items-center justify-content-center">
+            <div class="spinner-border text-primary" style="width: 3rem; height: 3rem;" role="status">
+                <span class="sr-only">Loading...</span>
+            </div>
+        </div>
+        <!-- Spinner End -->
+
+
+        <!-- Sidebar Start -->
+        <div class="sidebar pe-4 pb-3">
+            <nav class="navbar bg-secondary navbar-dark">
+                <a href="index.html" class="navbar-brand mx-4 mb-3">
+                <span style="color: #ffffff; font-family:'Courier New', Courier, monospace ;"><b>VAR</b></span><h2 style="color: black;font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;"><b>LET</b></h2>
+                    
+                </a>
+                <div class="navbar-nav w-100">
+                    <a href="index.html" class="nav-item nav-link active"><i class="fas fa-arrow-circle-right"></i>Dashboard</a>
+                
+                    <!-- Category Dropdown -->
+                    <div class="nav-item dropdown">
+                        <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">
+                            <i class="fas fa-arrow-circle-right"></i>Category
+                        </a>
+                        <div class="dropdown-menu bg-transparent border-0">
+                            <a href="./list-category" class="dropdown-item">List Category</a>
+                            <a href="./add-category" class="dropdown-item">Add Category</a>
+                        </div>
+                    </div>
+                
+                    <!-- Product Dropdown -->
+                    <div class="nav-item dropdown">
+                            <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">
+                            <i class="fas fa-arrow-circle-right"></i>Product
+                        </a>
+                        <div class="dropdown-menu bg-transparent border-0">
+                            <a href="./list-product" class="dropdown-item">List Product</a>
+                            <a href="./addproduct" class="dropdown-item">Add Product</a>
+                        </div>
+
+
+                    <a href="./list-user" class="nav-link"><i class="fas fa-arrow-circle-right"></i>User</a>
+                    <a href="./listOrder" class="nav-link"><i class="fas fa-arrow-circle-right"></i>Order</a>
+                    <a href="./couponList" class="nav-link"><i class="fas fa-arrow-circle-right"></i>Coupon</a>
+                    <a href="./salesReport" class="nav-item nav-link"><i class="fas fa-arrow-circle-right"></i>Sales report</a>
+                </div>
+                
+            </nav>
+       </div>
+        <!-- Sidebar End -->
+    
+
+        <!-- Content Start -->
+        <div class="content">
+            <!-- Navbar Start -->
+            <nav class="navbar navbar-expand bg-secondary navbar-dark sticky-top px-4 py-0">
+                <a href="index.html" class="navbar-brand d-flex d-lg-none me-4">
+                    <h2 class="text-primary mb-0"><i class="fa fa-user-edit"></i></h2>
+                </a>
+                <a href="#" class="sidebar-toggler flex-shrink-0">
+                    <i class="fa fa-bars"></i>
+                </a>
+                <form class="d-none d-md-flex ms-4">
+                    <input class="form-control bg-dark border-0" type="search" placeholder="Search">
+                </form>
+                <div class="navbar-nav align-items-center ms-auto">
+                   
+                    
+                    <div class="nav-item dropdown">
+                        <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">
+                            <img class="rounded-circle me-lg-2" src="img/user.jpg" alt="" style="width: 40px; height: 40px;">
+                            <span class="d-none d-lg-inline-flex">Diljith</span>
+                        </a>
+                        <div class="dropdown-menu dropdown-menu-end bg-secondary border-0 rounded-0 rounded-bottom m-0">
+                            <a href="#" class="dropdown-item">My Profile</a>
+                            <a href="#" class="dropdown-item">Settings</a>
+                            <a href="./logout" class="dropdown-item">Log Out</a>
+                        </div>
+                    </div>
+                </div>
+            </nav>
+            <!-- Navbar End -->
+
+            <div class="container-fluid pt-4 px-4">
+                <div class="row g-4">
+                    <div class="col-sm-6 col-xl-3">
+                        <div class="bg-secondary rounded d-flex align-items-center justify-content-between p-4">
+                            <i class="fa fa-chart-line fa-3x text-primary"></i>
+                            <div class="ms-3">
+                                <p class="mb-2">Today Sales</p>
+                                <h6 class="mb-0">₹ <%= total  %>.00</h6>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-6 col-xl-3">
+                        <div class="bg-secondary rounded d-flex align-items-center justify-content-between p-4">
+                            <i class="fa fa-chart-bar fa-3x text-primary"></i>
+                            <div class="ms-3">
+                                <p class="mb-2">Total Product</p>
+                                <h6 class="mb-0"><%= product.length  %></h6>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-6 col-xl-3">
+                        <div class="bg-secondary rounded d-flex align-items-center justify-content-between p-4">
+                            <i class="fa fa-chart-area fa-3x text-primary"></i>
+                            <div class="ms-3">
+                                <p class="mb-2">Total User</p>
+                                <h6 class="mb-0"><%= user.length  %></h6>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-6 col-xl-3">
+                        <div class="bg-secondary rounded d-flex align-items-center justify-content-between p-4">
+                            <i class="fa fa-chart-pie fa-3x text-primary"></i>
+                            <div class="ms-3">
+                                <p class="mb-2">Total Orders</p>
+                                <h6 class="mb-0"><%= order.length  %></h6>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- charts============= -->
+            <div class="container-fluid pt-4 px-4">
+                <div class="row g-4">
+                    
+                    <div class="col-sm-12 col-xl-6">
+                        
+                        <div class="bg-secondary text-center rounded p-4">
+                            <div style="width: 25rem;">
+                                <canvas id="myChart"></canvas>
+                            </div>
+                            <!-- <div class="d-flex align-items-center justify-content-between mb-4">
+                                <h6 class="mb-0">00000000000</h6>
+                            </div>
+                            -->
+                           
+                        </div>
+                    </div>
+                    <div class="col-sm-12 col-xl-6">
+                        <div class="bg-secondary rounded h-100 p-4">
+                            <h6 class="mb-4">Single Bar Chart</h6>
+                            <canvas id="bar-chart"></canvas>
+                        </div>
+                    </div>
+                    
+                </div>
+            </div>
+            <!-- Sale & Revenue Start -->
+           
+
+            <!-- Sale & Revenue End -->
+            <script src="/admin/lib/chart/chart.min.js"></script>
+        <script>   
+        const ctx = document.getElementById('myChart');
+            new Chart(ctx, {
+                type: 'doughnut',
+                data: {
+                    labels: ['COD', 'online','wallet'],
+                    datasets: [{
+                        label: 'Payment Method',
+                        data: ['<%=cod%>', '<%=online%>','<%= wallet %>'],
+                        backgroundColor: [
+                            'red',
+                            'white',
+                            'grey'
+                        ],
+                        hoverOffset: 4
+                    }]
+                }
+            });
+    
+    
+        </script>
+   <script>
+    // Sample data (replace with your actual data)
+    
+     const yearlySalesData = {
+        labels: ['2021', '2022', '2023'],
+        datasets: [{
+            label: 'Yearly Sales',
+            data: [5000, 7500, 9000], // Replace with your yearly sales data
+            borderColor: 'blue',
+            borderWidth: 2,
+            fill: false,
+        }]
+    };
+    const monthlySalesData = {
+        labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
+        datasets: [{
+            label: 'Monthly Sales',
+            data: [400, 600, 800, 700, 950, 1100], // Replace with your monthly sales data
+            borderColor: 'green',
+            borderWidth: 2,
+            fill: false,
+        }]
+    };
+
+    const weeklySalesData = {
+        labels: ['Week 1', 'Week 2', 'Week 3', 'Week 4'],
+        datasets: [{
+            label: 'Weekly Sales',
+            data: [100, 150, 120, 180], // Replace with your weekly sales data
+            borderColor: 'red',
+            borderWidth: 2,
+            fill: false,
+        }]
+    };
+
+    // Chart configuration
+    const chartConfig = {
+        type: 'line',
+        data: yearlySalesData, // Change this to the desired dataset
+        options: {
+            responsive: true,
+            scales: {
+                x: {
+                    display: true,
+                    title: {
+                        display: true,
+                        text: 'Time'
+                    }
+                },
+                y: {
+                    display: true,
+                    title: {
+                        display: true,
+                        text: 'Sales'
+                    }
+                }
+            }
+        }
+    };
+
+      // Single Bar Chart
+      var ctx4 = $("#bar-chart").get(0).getContext("2d");
+    var myChart4 = new Chart(ctx4, {
+        type: "bar",
+        data: {
+            labels: ["<%= firstYear.toLocaleDateString('en-US', { year: 'numeric', }).replace(/\//g, '-') %>", "<%= secondyear.toLocaleDateString('en-US', { year: 'numeric', }).replace(/\//g, '-') %>", "<%= thiredyear.toLocaleDateString('en-US', { year: 'numeric', }).replace(/\//g, '-') %>",],
+            datasets: [{
+                backgroundColor: [
+                    "rgba(235, 22, 22, .7)",
+                    "rgba(235, 22, 22, .6)",
+                    "rgba(235, 22, 22, .5)",
+                    "rgba(235, 22, 22, .4)",
+                    "rgba(235, 22, 22, .3)"
+                ],
+                data: ['<%= totalAmountYear %>', '<%= totalAmountSecondYear %>', '<%= totalAmountThirdYear %>', ]
+            }]
+        },
+        options: {
+            responsive: true
+        }
+    });
+
+
+    // Create charts
+    const yearlySalesChart = new Chart(document.getElementById('yearly-sales'), chartConfig);
+    const monthlySalesChart = new Chart(document.getElementById('monthly-sales'), chartConfig);
+    const weeklySalesChart = new Chart(document.getElementById('weekly-sales'), chartConfig);
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<%- include('../admin/partial/adminfooter.ejs') %>
+            

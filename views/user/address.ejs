@@ -1,0 +1,176 @@
+    <%- include('../user/partial/userheader2.ejs') %>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <style>
+        body {
+          margin: 0;
+          padding: 0;
+          font-family: Arial, sans-serif;
+        }
+    
+        .header {
+            margin: 0;
+          background-color: #333;
+          color: #fff;
+          padding: 10px;
+          text-align: center;
+        }
+    
+        .breadcrumb {
+          background-color: #f2f2f2;
+          padding: 10px;
+          text-align: center;
+        }
+    
+        .breadcrumb a {
+          text-decoration: none;
+          color: #333;
+          margin-right: 10px;
+        }
+    
+        .side-nav {
+          background-color: #f2f2f2;
+          width: 250px;
+          height: 100%;
+          position: fixed;
+          top: 0;
+          left: -250px; /* Hide the side navigation by default for small screens */
+          transition: left 0.3s ease;
+        }
+    
+        .side-nav ul {
+          list-style: none;
+          padding: 20px;
+        }
+    
+        .side-nav li {
+          margin-bottom: 10px;
+        }
+    
+        .side-nav a {
+          text-decoration: none;
+          color: #333;
+          display: block;
+          padding: 10px;
+          border-radius: 5px;
+          border-bottom: 1px solid #000; /* Add black lines under each field */
+        }
+    
+        .side-nav a:hover {
+          background-color: #ddd;
+        }
+    
+        /* Media query to display side navigation on larger screens */
+        @media (min-width: 768px) {
+          .side-nav {
+            left: 0;
+          }
+        }
+
+
+        /* /////////////////////////// */
+       
+
+       
+    </style>
+      
+      
+      <nav class="side-nav">
+          <br>
+          <br>
+          <br>
+          <br>
+          <ul class="list-group">
+              <a class="list-group-items active" href="./profile"  style="color: rgb(240, 59, 59);"><i class="ti-user pe-2"></i>Profile</a>
+              <br>
+              <a class="list-group-items"  href="/orderlist"><i class="ti-bag pe-2"></i>Orders</a>
+              <br>
+              <a class="list-group-items" href="/address"><i class="ti-location-pin pe-2"></i>Address</a>
+              <br>
+              
+              
+              <a class="list-group-items " href="/logout"><i class="ti-heart pe-2"></i>logout</a>
+              
+              <!-- <a class="list-group-items" href="account-tickets.html"><i class="ti-tag pe-2"></i>My Tickets<span class="badge badge-pill">4</span></a> -->
+            </ul>
+        </nav>
+        
+        <div class="row justify-content-center">
+                
+              <%  address.forEach((address)=>{
+                %>
+                <div class="card card-dashboard">
+                    <div class="card-body">
+                     
+                       
+                        <ul>
+                          <h3 class="card-title"> Address</h3>
+                            <li>Name : <%=address.userName %>
+                            </li>
+                            <li>mobile : <%=address.mobile %>
+                            </li>
+                            <li>houseName : <%=address.houseName %>
+                            </li>
+                            <li>city : <%=address.city %>
+                            </li>
+                            <li>state : <%=address.state %>
+                            </li>
+                            <li>pincode : <%=address.pincode %>
+                            </li>
+                            
+                            <a href="/editAddress?id=<%=  address._id %>">
+                              <button type="button" class="btn btn-outline-primary btn-rounded"  style="color: black; border-color: rgb(46, 202, 88);">
+                                  Edit
+                              </button>
+                          </a>
+                     
+                            <a href="">
+                                
+                                    <a class="btn btn-outline-primary btn-rounded" type="button" style="color: black; border-color:rgb(46, 202, 88) ;"
+                                            onclick="deleteAddress('<%= address._id%>')">Delete</a>
+                                </button>
+                            </a>
+
+                        </ul>
+                </div><!-- End .card-dashboard -->
+             </div>
+        
+           
+            <% }) %>
+            </div>    
+<script>
+
+  function deleteAddress(id) {
+              Swal.fire({
+                title: "Are you sure?",
+                text: "You won't be able to revert this!",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#3085d6",
+                cancelButtonColor: "#d33",
+                confirmButtonText: "Yes, delete it!",
+                cancelButtonText: "Cancel",
+              }).then((result) => {
+                if (result.isConfirmed) {
+                  $.ajax({
+                    url: "/deleteAddress",
+                    data: {
+        
+                      id: id,
+                    },
+                    method: "post",
+                    success: (response) => {
+                      if ((response.remove = true)) {
+                        location.reload();
+                      }
+                    },
+                  });
+                }
+              });
+            }
+            
+</script>

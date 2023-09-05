@@ -1,0 +1,223 @@
+<%-include('../user/partial/userheader2.ejs')  %>
+<br>
+<br>
+<br>
+<br>
+<br>
+<style>
+    body{
+  background-color: #eee;
+}
+
+/* theme font-family */
+
+
+/*---------------------------------Global Classes -------------------------*/
+
+p{
+    font-size: 1rem;
+    font-size: 18px;
+}
+
+h6{
+    font-size: .9rem
+
+}
+
+h5{
+    font-size: 13px;
+}
+/*----------x-----------------------Global Classes --------x-----------------*/
+
+section{
+    margin: 0 auto; 
+    max-width: 720px; 
+    min-width:400px; 
+    padding: 2em;
+    background: #fff;
+    border-radius: 1rem;
+/*     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19); */
+}
+
+.btn a{
+  text-decoration: none;
+  color: #ffffff;
+  
+}
+
+.btn{
+  margin-top: 30px;
+  margin-left: 100px;
+  padding: 10px;
+  border-radius: 5px;
+  margin-bottom: 20px; 
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.1), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+  border: none;
+  font-size: 15px;
+  background-color: rgb(0, 0, 0);
+  
+}
+
+.btn:focus{
+  outline: none;
+}
+
+.btn:hover{
+  background-color: rgb(83, 83, 83);
+  
+}
+
+.btn a:hover{
+  color: white
+  
+}
+
+
+
+.check-icon{
+  padding: 20px;
+   
+}
+
+.img{
+  background-color: #eee;
+  border-radius: 100px;
+  
+}
+
+.Order-no{
+  display: flex; 
+  margin-top: 20px; 
+  border: 3px solid #000000; 
+  padding: 10px;
+  border-radius: 5px;
+}
+
+.payment-form{
+  display: grid; 
+  grid-template-columns: auto auto; 
+  grid-gap: 2rem; 
+  border-radius: 4px; 
+  padding-top: 20px; 
+  padding-bottom: 20px;
+}
+
+.pay-on-delivery{
+  border: 1px solid #B0B0B0; 
+  border-radius: 5px;
+}
+
+.delivery-information{
+  border: 1px solid #4f4f4f; 
+  border-radius: 5px;
+}
+
+        /* Your CSS styles here */
+
+        body {
+            background-color: #eee;
+        }
+
+        /* ... Existing styles ... */
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        table, th, td {
+            border: 1px solid #4f4f4f;
+            padding: 10px;
+            text-align: left;
+        }
+        .subtotal-box {
+            border: 1px solid #4f4f4f;
+            padding: 10px;
+            margin-top: 20px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <section class="container">
+        <div class="Order-no">
+            <div class="check-icon">
+                <img src="https://cdn0.iconfinder.com/data/icons/essentials-9/128/_Tick-64.png" class="img" alt="check">
+            </div>
+            <div>
+                <h4 style="color: rgb(12, 83, 12);"><b>Thanks for placing an Order, <%= orderedProduct.userName %></b></h4>
+                <p><b>Order Id: <%= id  %></b></p>
+            </div>
+            
+            <!-- <div>
+                <button class="btn"><a href="#">SEE ORDER DETAILS</a></button>
+            </div> -->
+        </div>
+        <br>
+        <table class="delivery-information">
+            <thead>
+                <tr>
+                    <th style="color: #000000;">Product</th>
+                    <th style="color: #000000;">Shipping Address</th>
+                    <th style="color: #000000;">payment Method</th>
+                    <th style="color: #000000;">Total</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% orderedProduct.items.forEach((item) => { %>
+                <tr>
+                    <td>
+                        <img src="/productimages/<%= item.product.images[0] %>" alt="Ordered Product" style="max-width: 100px;">
+                        <h5 style="color: #000000;font-size: medium;"><b><%= item.product.productName %></b></h5>
+                    </td>
+                    <td>
+                        <p><b><span style="color: black;">Name: </span> <%= orderedProduct.userName %><br> <span style="color: black;">Address: </span><%= orderedProduct.deliveryDetails %></b></p>
+                    </td>
+                    <td>
+                        <p><b><%= orderedProduct.paymentMethod %></b></p>
+                    </td>
+                    <td>
+                        <p><b>$<%= item.Totalprice %></b></p>
+                    </td>
+                </tr>
+                
+                
+                <% }) %>
+            </tbody>
+        </table>
+        <br>
+        <div class="subtotal-box">
+        <h5>SubTotal</h5>
+        <p><b>$<%= orderedProduct.totalAmount %></b></p>
+    </div>
+        <!-- Rest of your code... -->
+    </section>
+</body>
+<div class="container text-center">
+    <button class="btn btn-primary mx-auto ml-2" id="continueShoppingBtn">Continue Shopping</button>
+  </div>
+
+  
+  
+  
+<br>
+<br>
+<br>
+
+<script>
+    document.getElementById('continueShoppingBtn').addEventListener('click', function(event) {
+      event.preventDefault();
+      
+      // Perform the navigation to the shop page
+      window.location.href = '/shop';
+      
+      // Update browser history state to the current page
+      history.replaceState({}, document.title, window.location.href);
+    });
+</script>
+
+<%- include('../user/partial/userfooter.ejs')  %>
+
+
+
+

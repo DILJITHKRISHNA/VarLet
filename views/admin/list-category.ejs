@@ -1,0 +1,160 @@
+<%- include('../admin/partial/adminheader.ejs')  %>
+
+<!DOCTYPE html>
+<html>
+<head>
+  <title>List Category</title>
+  <style>
+    /* CSS Styling */
+    body {
+      margin: 0;
+      padding: 0;
+      background-color: black;
+      color: white;
+    }
+    
+    .sidenav {
+      height: 100%;
+      width: 200px;
+      background-color: #191c24;
+      position: fixed;
+      top: 0;
+      left: 0;
+    }
+    
+    .sidenav a {
+      padding: 16px;
+      text-decoration: none;
+      display: block;
+      color: #fff;
+    }
+    
+    .header {
+      background-color: #191c24;
+      color: #fff;
+      padding: 20px;
+      text-align: center;
+    }
+    
+    .content {
+      padding: 20px;
+      margin-left: 200px; /* Adjust this value to match the width of the sidebar */
+    }
+    
+    form {
+      display: flex;
+      flex-direction: column;
+    }
+    
+    label {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 10px;
+    }
+    
+    input[type="text"],
+    textarea {
+      width: 100%;
+      padding: 8px;
+    }
+    
+    button[type="submit"] {
+      align-self: flex-end;
+      padding: 8px 16px;
+      color: white;
+      border: none;
+      cursor: pointer;
+    }
+    
+    /* Media Query for Responsive Design */
+    @media (max-width: 768px) {
+      .content {
+        margin-left: 0;
+        padding: 20px;
+      }
+      
+      .header {
+        text-align: left;
+      }
+      
+      .sidenav {
+        width: 100%;
+        height: auto;
+        position: static;
+        margin-bottom: 20px;
+      }
+      
+      .sidenav a {
+        padding: 10px;
+      }
+    }
+    
+    .category-table {
+      border: 1px solid white;
+    }
+    
+    .category-table th,
+    .category-table td {
+      border: 1px solid white;
+      padding: 8px;
+      text-align: left;
+      color: white;
+    }
+    
+  </style>
+</head>
+<body>
+<div class="sidenav" style="margin-top: 0;">
+  <a href="./adminhome">Dashboard</a>
+  <a href="./list-product">Product </a>
+  <a style="color: red;" href="#" class="active">Category</a>
+  <a href="./list-user">User</a>
+  <a href="./listOrder">Order</a>
+  <a href="./couponList">Coupon</a>
+  <a href="./salesReport">Sales Report</a>
+
+
+  <!-- Add more menu items as needed -->
+</div>
+
+<div class="header" style="background-color: #191c24; color: #fff; padding: 20px; text-align: center;">
+  <span style="color: #ffffff; font-family:'Courier New', Courier, monospace ;"><b>VAR</b></span><h2 style="color: black;font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;"><b>LET</b></h2>
+  <!-- Add header content here -->
+</div>
+  
+<div class="content">
+  <h3 style="font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;">List Category</h3>
+  <div style=" background-color: #000000;">
+    <div class="table-responsive text-nowrap">
+      <table class="table category-table">
+        <thead >
+          <tr>
+            <th><b>Category Name</b></th>
+            <th><b>Edit</b></th>
+          </tr>
+        </thead>
+        <tbody class="table-border-bottom-0">
+          <% if (category.length > 0) {
+          for (let i = 0; i < category.length; i++) { %>
+            <tr>
+              <td><%= category[i].name %></td>
+              <td>
+                <a href="/admin/edit-category?id=<%= category[i]._id %>" class="btn btn-light">
+                  <i class="bx bx-trash me-1"></i> Edit
+                  <br>
+                </a>
+              </td>
+            </tr>
+          <% } } else { %>
+            <tr>
+              <td colspan="4">Category not found</td>
+            </tr>
+          <% } %>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+</body>
+</html>

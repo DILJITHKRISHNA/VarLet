@@ -1,0 +1,107 @@
+
+    <title>Address Form</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f2f2f2;
+            margin: 20px;
+            width: auto;
+        }
+
+        h2 {
+            color: #333;
+            text-align: center;
+        }
+
+        form {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        label {
+            display: inline-block;
+            width: 120px;
+            text-align: left;
+            margin-right: 10px;
+        }
+
+        input[type="text"],
+        input[type="tel"],
+        textarea {
+            width: 100%;
+            padding: 5px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 3px;
+        }
+
+        input[type="submit"] {
+            background-color: #4CAF50;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            width: 100%;
+        }
+
+        input[type="submit"]:hover {
+            background-color: #45a049;
+        }
+
+        /* Media queries for responsive design */
+        @media (min-width: 480px) {
+            form {
+                max-width: 400px;
+                margin: 0 auto; /* Center the form horizontally on larger screens */
+            }
+
+            input[type="text"],
+            input[type="tel"],
+            textarea {
+                width: 100%;
+            }
+
+            input[type="submit"] {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    
+    <h2>Address Form</h2>
+    <form action="/addAddress" method="post">
+        <label for="name">Name:</label>
+        <input type="text" id="name"  name="name"  required>
+        <br>
+
+        <label for="mobile">Mobile:</label>
+        <input type="tel" id="mobile"  name="mobile" pattern="[0-9]{10}" required>
+        <br>
+
+        <label for="pincode">Pincode:</label>
+        <input type="text" id="pincode"  name="pincode" required>
+        <br>
+
+        <label for="address">House Address:</label>
+        <textarea id="address"  name="address" required></textarea>
+        <br>
+
+        <label for="city">City Name:</label>
+        <input type="text" id="city"  name="city" required>
+        <br>
+
+        <label for="state">State:</label>
+        <input type="text" id="state"  name="state" required>
+        <br>
+
+       
+
+
+        <input type="submit" value="Submit">
+        <!-- Form content goes here -->
+    </form>
+

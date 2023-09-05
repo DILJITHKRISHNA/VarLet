@@ -1,0 +1,205 @@
+<%-include('../user/partial/userheader2.ejs') %>
+<br> 
+<br>
+<br>
+<br>
+<br>       
+
+
+<style>
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: Arial, sans-serif;
+    }
+
+    .breadcrumb {
+      background-color: #f2f2f2;
+      padding: 10px;
+      text-align: center;
+    }
+
+    .breadcrumb a {
+      text-decoration: none;
+      color: #333;
+      margin-right: 10px;
+    }
+
+    .side-nav {
+      background-color: #f2f2f2;
+      width: 250px;
+      height: 100%;
+      position: fixed;
+      top: 0;
+      left: -250px; /* Hide the side navigation by default for small screens */
+      transition: left 0.3s ease;
+    }
+
+    .side-nav ul {
+      list-style: none;
+      padding: 20px;
+    }
+
+    .side-nav li {
+      margin-bottom: 10px;
+    }
+
+    .side-nav a {
+      text-decoration: none;
+      color: #333;
+      display: block;
+      padding: 10px;
+      border-radius: 5px;
+      border-bottom: 1px solid #000; /* Add black lines under each field */
+    }
+
+    .side-nav a:hover {
+      background-color: #ddd;
+    }
+
+    /* Media query to display side navigation on larger screens */
+    @media (min-width: 768px) {
+      .side-nav {
+        left: 0;
+      }
+    }
+  </style>
+        <section class="md">
+            <div class="container">
+                <div class="row justify-content-center">
+
+                    <!-- left panel -->
+                    <div class="col-lg-4 col-sm-9 mb-2-3 mb-lg-0">
+
+                        <div class="account-pannel">
+
+                            <div class="p-4">
+
+                                <div class="text-center">
+                                    <div class="pb-3">
+                                        <!-- <img class="img-fluid rounded-circle img-thumbnail" src="user/img/avatar/t-3.jpg" alt="..."> -->
+                                    </div>
+                     
+                                    <small></small>
+                                    <div class="reward-points">
+                                        <i class="ti-star text-primary pe-1"></i> 
+                                    </div>
+                                </div>
+                            </div>
+
+                            <nav class="side-nav">
+                                <br>
+                                <br>
+                                <br>
+                                <br>
+                                <ul class="list-group">
+                                  <a class="list-group-items active" href="./profile"  style="color: rgb(240, 59, 59);"><i class="ti-user pe-2"></i>Profile</a>
+                                  <br>
+                                  <a class="list-group-items"  href="/orderlist"><i class="ti-bag pe-2"></i>Orders</a>
+                                  <br>
+                                  <a class="list-group-items" href="/address"><i class="ti-location-pin pe-2"></i>Address</a>
+                                  <br>
+                                  <a class="list-group-items" href="/walletHistory"><i class="ti-location-pin pe-2"></i>Wallet History</a>
+                                  <br>
+                                  <% if( userId == "undefined"){%>
+                                  <a class="list-group-items " href="/login"><i class="ti-heart pe-2"></i>login</a>
+                                  <%}else{%>
+                                  <a class="list-group-items " href="/logout"><i class="ti-heart pe-2"></i>logout</a>
+                                    <%}%>
+                                    <br>
+
+                                  <!-- <a class="list-group-items" href="account-tickets.html"><i class="ti-tag pe-2"></i>My Tickets<span class="badge badge-pill">4</span></a> -->
+                                </ul>
+                              </nav>
+
+                        </div>
+
+                    </div>
+                    <div class="form-group">
+                      <h4><b>Wallet: </h4><h5 class="mb-0"></b>$<%= user.wallet %></h5>
+                       
+                    </div>
+                    <!-- end left panel -->
+
+                    <!-- right panel -->
+                    <div class="col-lg-8">
+
+                        <div class="common-block">
+
+                            <div class="inner-title">
+                                <h4 class="mb-0"><b>My Profile</b></h4>                           
+                             </div>
+                             <br>
+                       
+                            <form method="post">
+                         
+                                <div class="row">
+
+                                    <div class="col-sm-12">
+                                         
+                                        <div class="form-group">
+                                            <label>Your Name</label>
+                                            <input type="text" class="form-control" disabled name="name"   value="<%= user.name %>" > 
+                                           
+                                        </div>
+
+                                    </div>
+
+                                  
+
+                                </div>
+
+                                <div class="row">
+
+                                    <div class="col-sm-12">
+
+                                        <div class="form-group">
+                                            <label>Email Address</label>
+                                            <input type="email" class="form-control" disabled name="email" value="<%= user.email %>">
+                                        </div>
+
+                                    </div>
+                                   
+                                    
+                                </div>
+
+                                <div class="row">
+
+                                    <div class="col-sm-12">
+
+                                        <div class="form-group">
+                                            <label>Contact Number</label>
+                                            <input type="text" class="form-control" disabled name="mobile" value="<%= user.mobile %>">
+                                        </div>
+
+                                    </div>
+
+                                    <!-- <div class="col-sm-6">
+
+                                        <div class="form-group">
+                                            <label>Re-Password</label>
+                                            <input type="password" class="form-control" name="re-password" placeholder="Your re-password here">
+                                        </div>
+
+                                    </div> -->
+
+                                </div>
+
+                                <!-- <button type="button" class="butn-style2 mt-4">Update Profile</button> -->
+                                <a href="./addAddress" type="button" class="butn-style2 mt-4" data-bs-toggle="modal" data-bs-target="#exampleModal" data-bs-whatever="@getbootstrap" style="background-color: black; color: white;">Add Address</a>
+
+                            </form>
+
+
+
+                        </div>
+
+                    </div><!-- end right panel -->
+                </div>
+            </div>
+        </section>
+        
+        <!-- FOOTER
+        ================================================== -->
+       
+

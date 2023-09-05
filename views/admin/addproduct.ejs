@@ -1,0 +1,272 @@
+<%- include('../admin/partial/adminheader.ejs') %>
+<style>
+    /* CSS Styling */
+    body {
+        margin: 0;
+        padding: 0;
+        background-color: black;
+        color: white;
+    }
+    
+    .sidenav {
+        height: 100%;
+        width: 200px;
+        background-color: #191c24;
+        position: fixed;
+        top: 0;
+        left: 0;
+    }
+    
+    .sidenav a {
+        padding: 16px;
+        text-decoration: none;
+        display: block;
+        color: #fff;
+    }
+    
+    .header {
+        background-color: #191c24;
+        color: #fff;
+        padding: 20px;
+        text-align: center;
+    }
+    
+    .content {
+        padding: 20px;
+        margin-left: 200px; /* Adjust this value to match the width of the sidebar */
+    }
+    
+    form {
+        display: flex;
+        flex-direction: column;
+    }
+    
+    label {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 10px;
+    }
+    
+    input[type="text"],
+    textarea {
+        width: 100%;
+        padding: 8px;
+    }
+    
+    button[type="submit"] {
+        align-self: flex-end;
+        padding: 8px 16px;
+        background-color: #6c7293;
+        color: white;
+        border: none;
+        cursor: pointer;
+    }
+    
+    /* Media Query for Responsive Design */
+    @media (max-width: 768px) {
+        .content {
+            margin-left: 0;
+            padding-left: 20px;
+            padding-right: 20px;
+        }
+        
+        .header {
+            text-align: left;
+        }
+        
+        .sidenav {
+            width: 100%;
+            height: auto;
+            position: static;
+            margin-bottom: 20px;
+        }
+        
+        .sidenav a {
+            padding: 10px;
+        }
+    }
+</style>
+<body>
+<!-- Side Nav -->
+<div class="sidenav" style="margin-top: 0;">
+    <a href="./adminhome">Dashboard</a>
+    <a style="color: red;" href="#">Product </a>
+    <a href="./list-category">Category</a>
+    <a href="./list-user">User Management</a>
+    <a href="./listOrder">Order Management</a>
+    <a href="./salesReport">Sales Report</a>
+
+
+    <!-- Add more menu items as needed -->
+  </div>
+
+<!-- Main Content -->
+<div class="header" style="background-color: #191c24; color: #fff; padding: 20px; text-align: center;">
+    <h2 style="font-size: 24px; color: red;">Add Product</h2>
+    <!-- Add header content here -->
+</div>
+
+<div class="content">
+  <% if(err) { %>
+    <p><%= err %></p>
+ <% }%>
+ 
+  <form action="/admin/addproduct" method="post" enctype="multipart/form-data"> 
+      <div class="mb-3">
+          <label class="form-label" for="basic-default-name">Brand</label>
+          <input placeholder="Product Name" style="background-color: #fff;" type="text" name="name" class="form-control" required>
+          <p class="error" id="productname-error"></p>
+      </div>
+
+      <div class="mb-3">
+          <label class="form-label" for="basic-default-description">Description</label>
+          <input type="text" class="form-control" id="basic-default-description" style="background-color: white;" name="description" placeholder="Enter Description" />
+          <p class="error" id="description-error"></p>
+      </div>
+
+      <div class="mb-3">
+          <label class="form-label" for="basic-default-email">Quantity</label>
+          <input type="number" name="quantity" id="basic-default-email" style="background-color: white;" class="form-control" placeholder="Quantity"  aria-describedby="basic-default-email2" />
+          <p class="error" id="quantity-error"></p>
+      </div>
+
+      <div class="mb-3">
+          <label class="form-label" for="basic-default-phone">Price</label>
+          <input placeholder="Price" type="number" name="price" style="background-color: white;" id="basic-default-phone" class="form-control phone-mask" aria-describedby="basic-default-phone"/>
+          <p class="error" id="price-error"></p>
+      </div>
+
+      <div class="mb-3 ">
+        <label class="form-label" for="basic-default-phone" >Category</label>
+          <select id="selectCategory" name="category" class="form-select" style="background-color: white;"  class="form-control phone-mask"  aria-describedby="basic-default-phone">
+            <% if (category.length > 0) { %>
+              <%  for (let i = 0; i < category.length; i++) { %>
+            <option value="<%= category[i]._id %>"><%= category[i].name %></option>
+            <% }} %>
+          </select>
+          <p class="error mt-1" id="category-error"></p>
+      </div>
+        <div class="mb-3">
+            <label class="form-label" for="basic-default-message">Images</label>
+            <input style="background-color: white;" type="file" name="image"  id="imageInput" class="form-control phone-mask" accept="image/*" multiple />
+            <p class="error" id="image-error"></p>
+        </div>
+        <div class="mb-3">
+            <div id="imagePreviewContainer" style="display: none;">
+                <input type="file" id="imageInput" name="image" class="form-control" accept="image/*" onchange="previewImage()">
+                <img id="imagePreview" src="#" alt="Image Preview" style="max-width: 100%;">
+            </div>
+        </div>
+
+      <div class="d-flex justify-content-end">
+      </div>
+      <button type="submit"value="upload" class="btn btn-primary">Send</button>
+    </form>
+
+    <p id="errorText" style="color: red;"></p>
+
+</div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.12/cropper.min.js"></script>
+</body>
+<!-- Include Cropper.js library -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.12/cropper.min.js"></script>
+
+<!-- Your HTML content -->
+
+<script>
+  let cropper;
+
+  document.addEventListener("DOMContentLoaded", () => {
+    const imageInput = document.getElementById("imageInput");
+    const imagePreview = document.getElementById("imagePreview");
+    const imageForm = document.getElementById("imageForm");
+    const errorText = document.getElementById("errorText");
+
+    imageForm.addEventListener("submit", async (e) => {
+      e.preventDefault();
+
+      if (!cropper) {
+        alert("Please select an image and crop it.");
+        return;
+      }
+
+      const croppedCanvas = cropper.getCroppedCanvas();
+      const croppedImageData = croppedCanvas.toDataURL("image/jpeg", 0.8);
+
+      try {
+        const formData = new FormData(imageForm);
+        formData.append("croppedImage", croppedImageData);
+
+        const response = await fetch("/your-server-endpoint", {
+          method: "POST",
+          body: formData,
+        });
+
+        if (response.ok) {
+          // Image added successfully, handle the response if needed
+          console.log("Image added successfully");
+        } else {
+          // Handle error response
+          console.error("Error adding image");
+        }
+      } catch (error) {
+        console.error("AJAX request failed:", error);
+      }
+    });
+
+    imageInput.addEventListener("change", (e) => {
+      const file = e.target.files[0];
+      if (file) {
+        const reader = new FileReader();
+
+        reader.onload = (e) => {
+          imagePreview.src = e.target.result;
+          if (cropper) {
+            cropper.destroy();
+          }
+          cropper = new Cropper(imagePreview, {
+            aspectRatio: 1,
+            viewMode: 2,
+          });
+        };
+
+        reader.readAsDataURL(file);
+      }
+    });
+  });
+
+
+document.addEventListener('DOMContentLoaded', () => {
+  const imageInput = document.getElementById('imageInput');
+  const uploadButton = document.getElementById('uploadButton');
+  const errorContainer = document.getElementById('errorContainer');
+
+  uploadButton.addEventListener('click', () => {
+    const file = imageInput.files[0];
+
+    if (!file) {
+      errorContainer.textContent = 'Please select an image.';
+      return;
+    }
+
+    if (!file.type.startsWith('image/')) {
+      errorContainer.textContent = 'Selected file is not an image.';
+      return;
+    }
+
+    if (file.size > 5 * 1024 * 1024) { // 5 MB
+      errorContainer.textContent = 'Image size exceeds 5MB.';
+      return;
+    }
+
+    // If all validations pass, you can proceed with uploading or form submission
+    errorContainer.textContent = ''; // Clear any previous error messages
+    // Perform your upload or submission logic here
+  });
+});
+
+
+</script>
+
+

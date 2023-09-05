@@ -1,0 +1,185 @@
+<%- include('../admin/partial/adminheader.ejs') %>
+  
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0; /* Add this line to reset default margin */
+    }
+
+    h1 {
+      text-align: center;
+      margin-top: 20px; /* Adjust margin-top */
+      margin-bottom: 20px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 20px;
+    }
+
+    th, td {
+      padding: 10px;
+      text-align: left;
+      border-bottom: 1px solid #ddd;
+    }
+
+    th {
+      background-color: #171717;
+    }
+
+    tr:hover {
+      background-color: #2a2929;
+    }
+
+    button {
+      padding: 8px 12px;
+      background-color: #4CAF50;
+      color: #fff;
+      border: none;
+      cursor: pointer;
+      border-radius: 4px;
+    }
+
+    @media screen and (max-width: 600px) {
+      th, td {
+        padding: 5px;
+      }
+
+      button {
+        padding: 6px 10px;
+      }
+    }
+
+    .sidenav {
+      height: 100%;
+      width: 200px;
+      background-color: #191c24;
+      position: fixed;
+      top: 0;
+      left: 0;
+      padding-top: 80px; /* Add padding-top to adjust for header height */
+    }
+
+    .sidenav a {
+      padding: 16px;
+      text-decoration: none;
+      display: block;
+      color: #fff;
+    }
+
+    .header {
+      background-color: #191c24;
+      color: #fff;
+      padding: 20px;
+      text-align: center;
+      margin: 0; /* Set margin to 0 */
+    }
+
+    /* New styles */
+    .main-content {
+      margin-left: 200px; /* Set the same width as the side navigation */
+      padding: 20px; /* Add padding to the main content area */
+      
+    }
+    .product-image {
+  max-width: 50px; /* Set your desired maximum width */
+  max-height: 50px; /* Set your desired maximum height */
+}
+  </style>
+  
+<body>
+  <!-- sidnav -->
+  <div class="sidenav">
+    <a href="./adminhome">Dashboard</a>
+    <a href="./list-product" class="active">Product</a>
+    <a href="./list-category">Category</a>
+    <a href="./list-user">User Management</a>
+    <a href="" style="color: red;">Order Management</a>
+    <a href="./salesReport">Sales Report</a>
+
+    <!-- Add more menu items as needed -->
+  </div>
+
+  <!-- header -->
+  <div class="header">
+    <span style="color: #ffffff; font-family:'Courier New', Courier, monospace ;"><b>VAR</b></span><h2 style="color: black;font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;"><b>LET</b></h2>
+
+    <!-- Add header content here -->
+  </div>
+
+  <!-- Main content area -->
+  <div class="main-content">
+    <h3 style="text-align: left;">Order List</h3>
+    <table>
+      <thead>
+        <tr>
+          <th>No</th>
+          <th>OrderId</th>
+          <th>OrderDate</th>
+          <th>Payment</th>
+          <th>Status</th>
+          <th>Details</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% if(orders.length > 0) {
+            orders.forEach((orders, index) => { %>
+        <tr>
+            <td style="color: aliceblue;">
+                <%= index + 1 %>
+            </td>
+            
+            <td style="color: aliceblue;">
+                <%= orders._id %>
+            </td>
+            <td>
+               <%= orders.date.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: '2-digit' }).replace(/\//g, '-') %>
+            </td>
+            
+            <td style="color: aliceblue;" >
+                <%= orders.paymentMethod %>
+             
+            </td>
+            <td style="color: aliceblue;">
+                <%= orders.status %>
+                
+                </td>
+
+            <td>
+              <div class="card-title">
+                  <a href="/admin/OrderFullDetails/<%= orders._id %>" class="btn btn-primary">Details</a>              
+              </div>
+
+            </td>
+        </tr>
+        <% }) %>
+        <%  }else{ %>
+
+        <%}%>
+      </tbody>
+    </table>
+  </div>
+
+  <script>
+    function viewOrder(orderId) {
+        // Send an AJAX request to retrieve the order details
+        $.ajax({
+            url: `/orderFullDetails/${orderId}`, // Update the URL to match your server route
+            method: 'GET',
+            success: function (data) {
+                // Handle the response data (order details) here
+                console.log('Order Details:', data);
+                // You can display the order details in a modal, update the page, etc.
+            },
+            error: function (error) {
+                console.error('Error fetching order details:', error);
+            }
+        });
+    }
+
+    function viewDetails(orderId) {
+      // Implement logic to view the order details based on the orderId
+      console.log(`Viewing Details of Order: ${orderId}`);
+    }
+  </script>

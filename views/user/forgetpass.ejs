@@ -1,0 +1,226 @@
+
+<style>
+  /* Main styles */
+
+/* Main styles */
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+}
+
+.main {
+  position: relative;
+}
+
+.container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 0 15px;
+}
+
+/* Login page styles */
+.login-page {
+  position: relative;
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+
+.bg-image {
+  /* Add your background image URL here */
+  background-image: url('');
+}
+
+.pt-8 {
+  padding-top: 8px;
+}
+
+.pb-8 {
+  padding-bottom: 8px;
+}
+
+.pt-md-12 {
+  padding-top: 12px;
+}
+
+.pb-md-12 {
+  padding-bottom: 12px;
+}
+
+.pt-lg-17 {
+  padding-top: 17px;
+}
+
+.pb-lg-17 {
+  padding-bottom: 17px;
+}
+
+.form-box {
+  background-color: #aeaeae; /* Light gray background color */
+  border-radius: 8px;
+  padding: 20px; /* Adjust the padding to your desired size */
+  margin-top: 50px;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+}
+
+.form-tab {
+  margin-bottom: 30px;
+}
+
+.nav-pills {
+  background-color: #f8f9fa; /* Light gray background color */
+  border-radius: 8px;
+  padding: 10px;
+}
+
+.nav-link {
+  color: #333; /* Dark gray text color */
+}
+
+.nav-link.active {
+  background-color: #fff; /* White background color for active tab */
+}
+
+.tab-content {
+  padding-top: 20px;
+}
+
+.form-group {
+  margin-bottom: 20px;
+}
+
+.form-group label {
+  display: block;
+  font-weight: 600;
+  margin-bottom: 5px;
+}
+
+.form-control {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #ccc; /* Light gray border color */
+  border-radius: 4px;
+}
+
+.form-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 20px;
+}
+
+.btn {
+  padding: 12px 20px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: background-color 0.3s ease;
+}
+
+.btn-outline-primary-2 {
+  border: 2px solid #333538; /* Primary blue border color */
+  color: #333538; /* Primary blue text color */
+}
+
+.btn-outline-primary-2:hover {
+  background-color: #000000;
+  color: #fff;
+}
+
+.custom-control {
+  display: inline-flex;
+  align-items: center;
+}
+
+
+.form-choice {
+  text-align: center;
+  margin-top: 20px;
+}
+
+/* Alert styles */
+.alert {
+  background-color: #f8d7da; /* Light red background color */
+  color: #721c24; /* Dark red text color */
+  padding: 10px 15px;
+  border-radius: 4px;
+  margin-bottom: 20px;
+}
+
+/* Responsive styles */
+@media (max-width: 767px) {
+  .nav-pills {
+    flex-wrap: wrap;
+  }
+  .nav-link {
+    flex-grow: 1;
+    text-align: center;
+  }
+}
+
+@media (max-width: 575px) {
+  .form-choice {
+    text-align: center;
+  }
+  .col-sm-6 {
+    margin-top: 10px;
+  }
+}
+
+
+</style>
+
+<main class="main">
+  <div class="login-page bg-image pt-8 pb-8 pt-md-12 pb-md-12 pt-lg-17 pb-lg-17" style="background-image: url('')">
+    <div class="container">
+      <div class="form-box">
+        <div class="form-tab">
+          <h2 >Forgot Password</h2>
+          <div class="tab-content">
+            <form action="" method="post" class="tab-pane fade" id="signin-2" role="tabpanel">
+              <div class="form-group pt-5">
+                <label for="singin-email-2">Email Address *</label>
+                <input type="email" class="form-control" placeholder="Email" id="singin-email-2" name="email" required>
+              </div><!-- End .form-group -->
+
+              <div class="form-footer">
+                <button type="submit" class="btn btn-outline-primary-2">
+                  <span>SEND OTP</span>
+                  <i class="icon-long-arrow-right"></i>
+                </button>
+              </div><!-- End .form-footer -->
+            </form>
+
+            <form action="/verifyForgot" method="post">
+              <div class="form-group pt-5">
+                <label for="singin-email-2">OTP *</label>
+                <input type="text" class="form-control" placeholder="Otp" id="singin-email-2" name="otp" required>
+              </div><!-- End .form-group -->
+
+              <div class="form-footer">
+                <button type="submit" class="btn btn-outline-primary-2">
+                  <span>VERIFY</span>
+                  <i class="icon-long-arrow-right"></i>
+                </button>
+
+              </div><!-- End .form-footer -->
+              <br>
+              <% if (typeof message !== 'undefined') { %>
+                <div class="alert alert-danger" role="alert">
+                  <%= message %>
+                </div>
+              <% } %>
+            </form>
+
+            <div class="form-choice">
+             <button style="background-color: #ffffff;"><a href="./login" class="text-center">Don't have an account</a></button>
+              <div class="row">
+              </div><!-- End .row -->
+            </div><!-- End .form-choice -->
+          </div><!-- .End .tab-pane -->
+        </div><!-- .End .form-tab -->
+      </div><!-- End .form-box -->
+    </div><!-- End .container -->
+  </div><!-- End .login-page section-bg -->
+</main><!-- End .main -->
+

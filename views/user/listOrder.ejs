@@ -1,0 +1,96 @@
+<%- include('../user/partial/userheader2.ejs')  %>
+
+<br>
+<br>
+<br>
+<br>
+<br>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+    }
+    table {
+      width: 80%;
+      margin: 20px auto;
+      border-collapse: collapse;
+    }
+    table, th, td {
+      border: 1px solid #ccc;
+    }
+    th, td {
+      padding: 10px;
+      text-align: left;
+    }
+    th {
+      background-color: #f2f2f2;
+    }
+    h2 {
+      text-align: center;
+    }
+
+
+  </style>
+</head>
+<body>
+<table>
+  <thead>
+    <tr>
+      <th>No</th>
+      <th>Order ID</th>
+      <th>Order Date</th>
+      <th>Payment Method</th>
+      <th>Status</th>
+      <th>Details</th>
+    </tr>
+  </thead>
+  <% if(orders.length > 0){ %>
+    <% orders.forEach((order, index) => { %>
+      <tr>
+        <td><%= index + 1 %></td>
+        <td><%= order.userId %></td>
+    <td><%= order.items[0].date.toLocaleDateString() %></td>
+        <td>$<%= order.totalAmount %></td>
+        <td><%= order.paymentMethod %></td>
+        <td><b><%= order.status %></b></td>
+        <td>
+          <% if (order.status === 'Delivered') { %>
+            <button style="background-color: black;"><a href="/returnProduct">Return</a></button>
+          <% } else { %>
+            <button style="background-color: black; color: white;" onclick="cancelOrder('<%= order._id %>')">Cancel</button>
+          <% } %>
+        </td>
+        <td><button><a href="/orderdetails?id=<%= order._id %>">View</a></button></td>
+      </tr>   
+    <% }) %>
+  <% } %>
+</table>
+<br>
+<br>
+<br>
+<br>
+
+                        
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<script>
+function cancelOrder(orderId) {
+  $.ajax({
+    url: `/cancelOrder/${orderId}`,
+    method: 'post',
+    success: function(response) {
+      if (response.success) {
+        alert('Order canceled successfully.');
+        location.reload();
+      } else {
+        alert('Failed to cancel order.');
+      }
+    }
+  });
+}
+
+
+</script>
+</body>
+
+
+

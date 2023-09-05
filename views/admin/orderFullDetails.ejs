@@ -1,0 +1,277 @@
+<%- include('../admin/partial/adminheader.ejs') %>
+
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+  }
+
+  h1 {
+    text-align: center;
+    margin-top: 20px;
+    margin-bottom: 20px;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+  }
+
+  th, td {
+    padding: 10px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+  }
+
+  th {
+    background-color: #171717;
+    color: #fff;
+  }
+
+  tr:hover {
+    background-color: #2a2929;
+  }
+
+  button {
+    padding: 8px 12px;
+    background-color: #4CAF50;
+    color: #fff;
+    border: none;
+    cursor: pointer;
+    border-radius: 4px;
+  }
+
+  @media screen and (max-width: 600px) {
+    th, td {
+      padding: 5px;
+    }
+
+    button {
+      padding: 6px 10px;
+    }
+  }
+
+  .sidenav {
+    height: 100%;
+    width: 200px;
+    background-color: #191c24;
+    position: fixed;
+    top: 0;
+    left: 0;
+    padding-top: 80px;
+  }
+
+  .sidenav a {
+    padding: 16px;
+    text-decoration: none;
+    display: block;
+    color: #fff;
+  }
+
+  .header {
+    background-color: #191c24;
+    color: #fff;
+    padding: 20px;
+    text-align: center;
+    margin: 0;
+  }
+
+  /* New styles */
+  .main-content {
+    margin-left: 220px; /* Adjusted to accommodate sidenav width */
+    padding: 20px;
+  }
+
+  .product-image {
+    max-width: 50px;
+    max-height: 50px;
+  }
+
+  .table-container {
+    margin-top: 50px; /* Adjusted to create space between header and table */
+  }
+
+  .modal-dialog {
+    max-width: 80%; /* Adjusted to make modal wider */
+  }
+</style>
+
+<div class="sidenav">
+  <a href="/">Dashboard</a>
+  <a href="./list-product" class="active">Product</a>
+  <a href="./list-category">Category</a>
+  <a href="./list-user">User Management</a>
+  <a href="" style="color: red;">Order Management</a>
+  <a href="./salesReport">Sales Report</a>
+
+</div>
+
+<div class="header">
+  <span style="color: #ffffff; font-family:'Courier New', Courier, monospace ;"><b>VAR</b></span>
+  <h2 style="color: black;font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;"><b>LET</b></h2>
+  <!-- Add header content here -->
+</div>
+<div class="main-content">
+    <div class="table-container">
+      <div class="table-responsive" >
+    <div class="main-panel">
+        <div class="content-wrapper">
+            <div class="col-lg-12 grid-margin stretch-card">
+                <div class="card" style="background-color:rgb(255, 255, 255);"  style="border: 8px; border-color: #bb1818;">
+                    <div class="card-body">
+                        <h4 class="card-title">Order Details</h4>
+                        
+                           <ul><span style="color: rgb(118, 118, 118);" ><b>Amount: </b> </span> $<%= orders.totalAmount %></ul> 
+                           <ul><span style="color: rgb(118, 118, 118);"><b> Date: </b> </span> <%= orders.date.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: '2-digit' }).replace(/\//g, '-') %></ul> 
+                           <ul><span style="color: rgb(118, 118, 118);"><b>Payment method: </b> </span><%= orders.paymentMethod %></ul> 
+                           <ul><span style="color: rgb(118, 118, 118);"><b>Order status:</b></span>  <%= orders.status %></ul> 
+                           <ul><span style="color: rgb(118, 118, 118);"><b>Delivery details:</b></span>  <%= orders.deliveryDetails %></ul> 
+
+                            <table class="table table-dark">
+                                <thead>
+                                    <tr>
+                                        <th> No </th>
+                                        <th>Name</th>
+                                        <th>Product</th>
+                                        <th>Category </th>
+                                        <th>Stock Status </th>
+                  
+                                        <th>Action</th>
+                                       
+                                    </tr>
+                                </thead>
+                                    <tbody>
+                                      <% if( orders.items.length > 0 ){
+                                      orders.items.forEach((data,index)=>{ %>
+
+                                        <tr>
+                                         <td>
+                                            <%= index+1 %>
+                                         </td>
+                                         <td>
+                                            <%= data.product.productName %>
+                                         </td>
+                                         <td>
+                                            Rs:<%= data.product.price %>
+                                         </td>
+                                         <td>
+                                            <%= data.product.category %>
+                                         </td>
+                                         <td>
+                                           <%= data.quantity %>
+                                         </td>
+                                       
+                                            <td>
+                                                <%  if( data.status == 'cancelled' ){%>
+
+                                                    <a type="button" class="btn  btn-primary btn-outline-danger " data-bs-toggle="modal" data-bs-target="#exampleModal" > cancel reason </a>
+                              
+                                                    <%  }else if (data.status == 'returned' ){%>
+                                                     
+                                                <a type="button" class="btn btn-outline-danger" data-bs-toggle="modal" data-bs-target="#returnReasonmodal" > view Reason </a>
+
+                                               <%  }else if (data.status == 'Delivered' ){%>
+                                                 <p class="text-success">Delivered</p>
+                                                      <% }else{ %>
+                                                    <div class="dropdown">
+                                                      <button class="btn btn-info dropdown-toggle" type="button" id="dropdownMenuOutlineButton <%= index %>" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Actions</button>
+                                                      <div class="dropdown-menu" aria-labelledby="dropdownMenuOutlineButton<%= index %>">
+                                                        <button class="dropdown-item" onclick="updateStatus('placed', '<%= data.product._id %>', '<%= orders._id %>')">Placed</button>
+                                                        <button class="dropdown-item" onclick="updateStatus('shipped', '<%= data.product._id %>', '<%= orders._id %>')">Shipped</button>
+                                                        <button class="dropdown-item" onclick="updateStatus('Out for delivery', '<%= data.product._id %>', '<%= orders._id %>')">Out for Delivery</button>
+                                                        <button class="dropdown-item" onclick="updateStatus('Delivered', '<%= data.product._id %>', '<%= orders._id %>')">Delivered</button>
+                                                    </div>
+                                                  <%}%>
+                                            </td>
+                                           
+                                        </tr>
+                                       
+                        
+
+
+                            <!-- Modal -->
+                            <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="exampleModalLabel">Cancel reason </h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                    <%= data.cancelreason %>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                </div>
+                                </div>
+                            </div>
+                            </div>
+
+                            <div class="modal fade" id="returnReasonmodal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="exampleModalLabel">Return reason </h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                    <%= data.returnReason %>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                </div>
+                                </div>
+                            </div>
+                            </div>
+                                 
+                                       <% }) %>
+                                       <%}%>
+                                    </tbody>
+                            </table>
+                            
+
+                            </div>
+                    </div>
+               
+            </div>
+        </div>
+    </div>
+      </div>
+    </div>
+</div>
+
+<script>
+    $(document).ready(function() {
+        // Initialize Bootstrap dropdowns
+        $('.dropdown-toggle').dropdown();
+    });
+</script>
+
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<script>
+  function updateStatus(status, proId, orderId) {
+    $.ajax({
+      url: '/admin/updateStatus',
+      method: 'post',
+      data: {
+        status,
+        proId,
+        orderId,
+      },
+      success: (Response) => {
+
+        location.reload();
+      },
+      error: (error) => {
+        console.error("An error occurred:", error);
+      },
+    });
+  }
+</script>
+
+      
+
+      

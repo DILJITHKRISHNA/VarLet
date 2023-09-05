@@ -1,0 +1,67 @@
+<%- include('../user/partial/userheader2.ejs') -%>
+<br>
+<br>
+<br>
+<br>
+<br>
+
+<section class="md">
+    <div class="container">
+        <div class="row justify-content-center">
+
+            <!-- Main Content Column -->
+            <div class="col-lg-9 col-md-8">
+                <!-- Centered Content -->
+                <div class="text-center">
+                    <br>
+                    <br>
+                    <br>
+                    <br>
+                    <h2><b><span style="color: rgb(203, 84, 84);">Wallet</span> History</b></h2>
+
+                    <% if (orders.length > 0) { %>
+                    <div class="table-responsive">
+                        <table class="table table-bordered">
+                            <thead>
+                                <tr>
+                                    <th>No</th>
+                                    <th>Order Id</th>
+                                    <th>Amount</th>
+                                    <th>Date</th>
+                                    <th>Transaction</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <% orders.forEach((order, index) => { %>
+                                <tr>
+                                    <td><%= index + 1 %></td>
+                                    <td><%= order.orderId  %></td>
+                                    <td><%= order.totalAmount %></td>
+                                    <td><%= order.items[0].date.toLocaleDateString() %></td>
+                                    <% if(order.paymentMethod === "wallet"){  %>
+                                    <td><%= order.paymentMethod %></td>
+                                    <% } %>
+                                </tr>
+                                <% }) %>
+                            </tbody>
+                        </table>
+                    </div>
+                    <% } else { %>
+                    <p>No Wallet History available.</p>
+                    <% } %>
+
+                    <br>
+                    <br>
+                    <br>
+                    <br>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<br>
+<br>
+<br>
+<br>
+
+<%- include('../user/partial/userfooter.ejs') -%>

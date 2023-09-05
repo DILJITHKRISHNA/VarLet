@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>List Product</title>
+  <style>
+    /* CSS Styling */
+    body {
+      margin: 0;
+      padding: 0;
+      background-color: black;
+      color: white;
+    }
+    
+    .sidenav {
+      height: 100%;
+      width: 200px;
+      background-color: #191c24;
+      position: fixed;
+      top: 0;
+      left: 0;
+    }
+    
+    .sidenav a {
+      padding: 16px;
+      text-decoration: none;
+      display: block;
+      color: #fff;
+    }
+    
+    .header {
+      background-color: #191c24;
+      color: #fff;
+      padding: 20px;
+      text-align: center;
+    }
+    
+    .content {
+      padding: 20px;
+      margin-left: 200px; /* Adjust this value to match the width of the sidebar */
+    }
+    
+    form {
+      display: flex;
+      flex-direction: column;
+    }
+    
+    label {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 10px;
+    }
+    
+    input[type="text"],
+    textarea {
+      width: 100%;
+      padding: 8px;
+    }
+    
+    button[type="submit"] {
+      align-self: flex-end;
+      padding: 8px 16px;
+      background-color: #6c7293;
+      color: white;
+      border: none;
+      cursor: pointer;
+    }
+    
+    /* Media Query for Responsive Design */
+    @media (max-width: 768px) {
+      .content {
+        margin-left: 0;
+        padding-left: 20px;
+        padding-right: 20px;
+      }
+      
+      .header {
+        text-align: left;
+      }
+      
+      .sidenav {
+        width: 100%;
+        height: auto;
+        position: static;
+        margin-bottom: 20px;
+      }
+      
+      .sidenav a {
+        padding: 10px;
+      }
+      
+      table {
+        font-size: 14px;
+      }
+      
+      @media (max-width: 576px) {
+        table {
+          font-size: 12px;
+        }
+      }
+    }
+    /* CSS Styling */
+    
+    .table-container {
+      max-width: 100%;
+      overflow-x: auto;
+    }
+    
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      border: 1px solid white;
+    }
+    
+    th, td {
+      border: 1px solid white;
+      padding: 8px;
+      text-align: left;
+    }
+    
+    .table-light th {
+      background-color: #f8f8f8;
+    }
+    
+    .badge {
+      background-color: #4CAF50;
+      color: white;
+      padding: 4px 8px;
+      border-radius: 4px;
+    }
+    
+    .edit-button, .delete-button {
+      background-color: #6c7293;
+      color: white;
+      border: none;
+      padding: 4px 8px;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+
+    /* Media Query for Responsive Design */
+    @media (max-width: 768px) {
+      .table-container {
+        width: 100%;
+      }
+      
+      .edit-button, .delete-button {
+        font-size: 12px;
+      }
+    }
+    .btn {
+  display: inline-block;
+  padding: 8px 16px;
+  border: none;
+  border-radius: 5px;
+  text-decoration: none;
+  color: #ffffff; /* Text color (white) */
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+/* Light blue button style */
+.btn-light-blue {
+  background-color: #add8e6; /* Light blue color */
+}
+
+/* Hover effect */
+.btn-light-blue:hover {
+  background-color: #87ceeb; /* Lighter shade of blue on hover */
+}
+.custom-font {
+  font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif; /* Replace with your desired font-family */
+  font-size: 24px; /* Replace with your desired font size */
+  font-weight: bold; /* Replace with your desired font weight */
+  color: #ffffff;
+}
+  </style>
+</head>
+<body>
+  <div class="sidenav" style="margin-top: 0;">
+    <a href="./adminhome">Dashboard</a>
+    <a style="color: red;" href="#" class="active">Product</a>
+    <a href="./list-category">Category</a>
+    <a href="./list-user">User</a>
+    <a href="./listOrder">Order</a>
+    <a href="./salesReport">Coupon</a>
+    <a href="./salesReport">Sales Report</a>
+
+
+    <!-- Add more menu items as needed -->
+  </div>
+
+  <div class="header">
+    <span style="color: #ffffff; font-family:'Courier New', Courier, monospace ;"><b>VAR</b></span><h2 style="color: black;font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;"><b>LET</b></h2>
+
+    <!-- Add header content here -->
+  </div>
+
+ <div class="content">
+  <form action="/admin/list-product" method="post" >
+    <div style="border: 2px solid #313749; padding: 10px;">
+      <div class="card">
+        <h5 class="card-header custom-font"><u>Products</u></h5>
+          <div class="table-responsive text-nowrap">
+            <div class="table-container">
+              <table class="table" style="border: 1px solid #fff; background-color:#191c24;">
+              <thead class="table-dark">
+              <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Image</th>
+                <th>Description</th>
+                <th>Price</th>
+                <th>Category</th>
+                <th>Quantity</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody class="table-border-bottom-0"> 
+                      
+              <%
+            if(product.length>0){
+                for(let i=0 ; i < product.length ; i++){
+                  %>
+              <tr>
+                <td><i class="fab fa-angular fa-lg text-danger me-3"></i> <strong><%= i+1 %></strong></td>
+                <td><%= product[i].productName %></td>
+                <% if (product[i].images && product[i].images[0]) { %>
+                  <td><img src="/productimages/<%= product[i].images[0] %>" alt="" style="width: 80px; height: 80px;"></td>
+                <% } else { %>
+                  <td>No Image Available</td>
+                <% } %>
+                <td><strong><%= product[i].description %></strong></td>
+                    
+                <td>₹<%= product[i].price %></td>
+             
+                <td><%= product[i].category %></td>
+                
+           
+                <td><%= product[i].quantity %></td>
+
+                <% if(product[i].stock===true){
+                %>
+                
+                <td><span class="badge bg-label-primary me-1">on stock</span></td>
+               
+                
+                <% }else{ %>
+                      
+
+                  <% } %>
+                  <td>                   
+                    
+                        <a href="/admin/edit-product/<%= product[i]._id %>" class="btn btn-light-blue"><i class="bx bx-edit-alt me-1" ></i> Edit</a>
+                        <% if (product[i].list === true) { %>
+                            <a href="/admin/unList-product?id=<%= product[i]._id %>" class="btn btn-light-blue">Listed</a>
+                          <% } else { %>
+                            <a href="/admin/Listproduct?id=<%= product[i]._id %>" class="btn btn-light-blue">Unlisted</a>
+                          <% } %>
+                                                                    
+                </td>
+                
+              </tr>
+              <%
+               }
+            }else{
+            %>
+              <tr>
+                <td colspan="5">Product not found</td>
+              </tr>
+              <%
+            }
+            %>
+          </table>
+        </div>
+        </div>
+      </div>
+    </div>
+  </form>
+</div>
+
+</body>
+</html>

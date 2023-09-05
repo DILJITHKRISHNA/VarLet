@@ -1,0 +1,67 @@
+
+<!-- Sidebar Start -->
+<div class="sidebar pe-4 pb-3">
+    <nav class="navbar bg-secondary navbar-dark">
+        <a href="index.html" class="navbar-brand mx-4 mb-3">
+            <h3 class="text-primary"><i class="fa fa-user-edit me-2"></i><b style="color: red; font-family: 'Open Sans', sans-serif"></b></h3>
+        </a>
+        <div class="d-flex align-items-center ms-4 mb-4">
+            <div class="position-relative">
+                <img class="rounded-circle" src="img/image.png" alt="" style="width: 40px; height: 40px;">
+                <div class="bg-success rounded-circle border border-2 border-white position-absolute end-0 bottom-0 p-1"></div>
+            </div>
+            <div class="ms-3">
+                <h6 class="mb-0">Diljith</h6>
+                <span>Admin</span>
+            </div>
+        </div>
+        <div class="navbar-nav w-100">
+            <a href="index.html" class="nav-item nav-link active"><i class="fas fa-arrow-circle-right"></i>Dashboard</a>
+            <div class="nav-item dropdown">
+                <a href="chart.html" class="nav-link dropdown-toggle" data-bs-toggle="dropdown"><i class="fas fa-arrow-circle-right"></i>Product</a>
+                <div class="dropdown-menu bg-transparent border-0">
+                    <a href="./list-product" class="dropdown-item <%= currentPage === 'list-product' ? 'active' : '' %>">List product</a>
+                    <a href="./addproduct" class="dropdown-item <%= currentPage === 'add-product' ? 'active' : '' %>">Add product</a>
+                </div>
+            </div>
+            
+            <div class="nav-item dropdown">
+                <a href="chart.html" class="nav-link dropdown-toggle" data-bs-toggle="dropdown"><i class="fas fa-arrow-circle-right"></i>category</a>
+                <div class="dropdown-menu bg-transparent border-0">
+                    <a href="#" class="dropdown-item">List category</a>
+                    <a href="#" class="dropdown-item">Add category</a>
+                </div>
+            </div>
+            <div class="nav-item dropdown">
+                <a href="lisuser.ejs" class="nav-link"><i class="fas fa-arrow-circle-right"></i>User</a>
+                
+            </div>
+            <!-- <div class="nav-item dropdown">
+                <a href="chart.html" class="nav-link dropdown-toggle" data-bs-toggle="dropdown"><i class="fas fa-arrow-circle-right"></i>Banner</a>
+                <div class="dropdown-menu bg-transparent border-0">
+                    <a href="#" class="dropdown-item">Banner</a>
+                    
+                </div>
+            </div> -->
+            <!-- <div class="nav-item dropdown">
+                <a href="chart.html" class="nav-link dropdown-toggle" data-bs-toggle="dropdown"><i class="fas fa-arrow-circle-right"></i>Order</a>
+                <div class="dropdown-menu bg-transparent border-0">
+                    <a href="#" class="dropdown-item">List Order</a>
+                    
+                </div>
+            </div> -->
+            
+            <!-- <a href="chart.ejs" class="nav-item nav-link"><i class="fas fa-arrow-circle-right"></i>Charts</a> -->
+            <!-- <div class="nav-item dropdown">
+                <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown"><i class="fas fa-arrow-circle-right"></i>Page</a>
+                <div class="dropdown-menu bg-transparent border-0">
+                    <a href="signin.html" class="dropdown-item">Sign In</a>
+                    <a href="signup.html" class="dropdown-item">Sign Up</a>
+                    <a href="404.html" class="dropdown-item">404 Error</a>
+                    <a href="blank.html" class="dropdown-item">Blank Page</a>
+                </div>
+            </div> -->
+        </div>
+    </nav>
+</div>
+<!-- Sidebar End -->    

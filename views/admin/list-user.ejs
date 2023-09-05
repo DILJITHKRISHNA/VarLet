@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>User List</title>
+  <style>
+    /* CSS Styling */
+    body {
+      margin: 0;
+      padding: 0;
+      background-color: black;
+      color: white;
+    }
+    
+    .sidenav {
+      height: 100%;
+      width: 200px;
+      background-color: #191c24;
+      position: fixed;
+      top: 0;
+      left: 0;
+    }
+    
+    .sidenav a {
+      padding: 16px;
+      text-decoration: none;
+      display: block;
+      color: #fff;
+    }
+    
+    .header {
+      background-color: #191c24;
+      color: #fff;
+      padding: 20px;
+      text-align: center;
+    }
+    
+    .content {
+      padding: 20px;
+      margin-left: 200px; /* Adjust this value to match the width of the sidebar */
+    }
+    
+    form {
+      display: flex;
+      flex-direction: column;
+    }
+    
+    label {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 10px;
+    }
+    
+    input[type="text"],
+    textarea {
+      width: 100%;
+      padding: 8px;
+    }
+    
+    button[type="submit"] {
+      align-self: flex-end;
+      padding: 8px 16px;
+      background-color: #6c7293;
+      color: white;
+      border: none;
+      cursor: pointer;
+    }
+    
+    /* Media Query for Responsive Design */
+    @media (max-width: 768px) {
+      .content {
+        margin-left: 0;
+        padding-left: 20px;
+        padding-right: 20px;
+      }
+      
+      .header {
+        text-align: left;
+      }
+      
+      .sidenav {
+        width: 100%;
+        height: auto;
+        position: static;
+        margin-bottom: 20px;
+      }
+      
+      .sidenav a {
+        padding: 10px;
+      }
+      
+      table {
+        font-size: 14px;
+        border-collapse: collapse;
+        width: 100%;
+      }
+      
+      @media (max-width: 576px) {
+        table {
+          font-size: 12px;
+        }
+      }
+    }
+    /* CSS Styling */
+    
+    .table-container {
+      max-width: 100%;
+      overflow-x: auto;
+    }
+    
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      border: 1px solid white;
+    }
+    
+    th, td {
+      border: 1px solid white;
+      padding: 8px;
+      text-align: left;
+    }
+    
+    .table-light th {
+      background-color: #f8f8f8;
+    }
+    
+    .badge {
+      background-color: #4CAF50;
+      color: white;
+      padding: 4px 8px;
+      border-radius: 4px;
+    }
+    
+    .edit-button, .delete-button {
+      background-color: #6c7293;
+      color: white;
+      border: none;
+      padding: 4px 8px;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+
+    /* Media Query for Responsive Design */
+    @media (max-width: 768px) {
+      .table-container {
+        width: 100%;
+      }
+      
+      .edit-button, .delete-button {
+        font-size: 12px;
+      }
+    }
+  </style>
+</head>
+<body>
+<div class="sidenav" style="margin-top: 0;">
+  <a href="./adminhome">Dashboard</a>
+  <a href="./list-product">Product</a>
+  <a href="./list-category">Category</a>
+  <a style="color: red;" href="./list-user" class="active">User Management</a>
+  <a href="./listOrder">Order Management</a>
+  <a href="./salesReport">Sales Report</a>
+
+  <!-- Add more menu items as needed -->
+</div>
+
+<div class="header" style="background-color: #191c24; color: #fff; padding: 20px; text-align: center;">
+  <span style="color: #ffffff; font-family:'Courier New', Courier, monospace ;"><b>VAR</b></span><h2 style="color: black;font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;"><b>LET</b></h2>
+  <!-- Add header content here -->
+</div>
+<div class="content">
+  <div class="content-wrapper">
+    <!-- Basic Bootstrap Table -->
+    <h3 style="color: white; font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif ; ">List User</h3>
+    <div class="card">
+      <br>
+      <div class="table-container">
+        <div class="table-responsive text-nowrap">
+          <table class="table">
+              <thead>
+                <tr>
+                  <th>No</th>
+                  <th>Name</th>
+                  <th>Email</th>
+                  <th>Status</th>
+                  <th class="text-end">Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                <% if (users.length === 0) { %>
+                  <tr>
+                    <td colspan="5">No Users</td>
+                  </tr>
+                <% } else { %>
+                  <% for (let i = 0; i < users.length; i++) { %>
+                    <tr>
+                      <td><i class="fab fa-angular fa-lg text-danger me-3"></i><strong><%= i + 1 %></strong></td>
+                      <td style="color: rgb(255, 255, 255);"><b><%= users[i].name %></b></td>
+                      <td style="color: rgb(255, 255, 255);"><%= users[i].email %></td>
+                      <% if (users[i].is_block) { %>
+                        <td><span class="badge rounded-pill alert-danger" style="background-color: red;">Deactive</span></td>
+                        <% } else { %>
+                          <td><span class="badge rounded-pill alert-success">Active</span></td>
+                          <% } %>
+                          <td class="text-end">
+                            <% if (users[i].is_block) { %>
+                              <a href="/admin/blockuser?id=<%= users[i]._id %>">
+                                <button class="btn btn-sm btn-brand rounded font-sm mt-15 blocked btn-info">unblock</button>
+                              </a>
+                              <% } else { %>
+                                <a href="/admin/unblockuser?id=<%= users[i]._id %>">
+                                  <button class="btn btn-sm btn-brand rounded font-sm mt-15 unblocked btn-info">block</button>
+                          </a>
+                        <% } %>                    
+                      </td>
+                    </tr>
+                  <% } %>
+                <% } %>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</body>
+</html>

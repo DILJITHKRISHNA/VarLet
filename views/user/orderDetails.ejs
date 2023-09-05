@@ -1,0 +1,203 @@
+<%- include('../user/partial/userheader2.ejs')  %>
+<br>
+<br>
+<br>
+<br><br>
+
+<main class="main"> 
+    <div class="page-content">
+        <div class="container"> 
+            
+            <a href="/orderList" style="float: right;">
+              <button type="button"   style="color: rgb(7, 6, 5);  background-color:rgb(87, 87, 87); ">
+                <b>Goback  <<<</b>
+              </button>
+               </a>
+            <div class="jumbotron jumbotron-fluid ">
+                
+              <div class="container">
+                <h1 class="display-4" style="font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;">Hello <span style="color: #ca4b4b; font-weight: 500 ; " ><%= order.userName  %></span></h1>
+                <p class="lead">Order Id: <span style="color: #000; font-weight: 500;"><%= order.orderId  %></span></p>
+                <p class="lead">Order date: <span style="color: #000; font-weight: 500;"><%= order.date.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: '2-digit' }).replace(/\//g, '-')  %></p></span>
+                <p class="lead">Paymentmethod: <span style="color: #000; font-weight: 500;"><%= order.paymentMethod  %></span> </p>
+                <p class="lead">Total price: <span style="color: #000; font-weight: 500;"><%= order.totalAmount  %>/-</span></p>
+                <p class="lead">Total discount: <span style="color: #000; font-weight: 500;"><%= order.discount  %>/-</span></p>
+                
+                <p class="lead">Delivery address: <span style="color: #000; font-weight: 500;"><%= order.deliveryDetails %></span> </p>
+
+
+                <a href="/invoice/<%= order.id %>">
+                  <button  type="button" class="btn btn-outline-primary btn-rounded " style="color: black; border-color: rgb(121, 121, 121);">
+                  Download invoice
+                 </button>
+                 </a>
+              </div>
+              
+            </div>
+            
+            <div class="products">
+              <div class="row">
+                 
+                      <% products.forEach((data)=>{ %>
+                
+                          <div class="col-6 col-md-4 col-lg-4 col-xl-3 ">
+                     
+                              <div class="product product-11 text-center shadow-lg p-3 mb-5 bg-white rounded" >
+                          
+                                  <figure class="product-media">
+                                      <a href="/product_details?id=<%= data.product._id %>">
+                                          <img style="max-height: 400px;" src="/productimages/<%=data.product.images[1] %>" alt="Product image" class="product-image-hover">
+                                          <img style="max-height: 400px;" src="/productimages/<%=data.product.images[0]%>" alt="Product image" class="product-image">
+
+                                      </a>
+  
+                                  </figure><!-- End .product-media -->
+  
+                                  <div class="product-body">
+                                      <h3 class="product-title"><span style="font-weight: 600; font-size: 20px; color: #515151;"><%= data.product.productName %></span></h3><!-- End .product-title -->
+                                      <h5 class="product-title"><span style="font-weight: 600; font-size: 15px; color: #515151;">Qty:<%= data.quantity %></span></h5><!-- End .product-title -->
+                                      <div style="font-size:18px ; color: #000;  "><span style="color: rgb(79, 79, 79); font-family: monospace;"></span>
+                                          <% if(data.status == "Delivered"){ %>
+                                          <h6 style="color: rgb(120, 222, 18);">Delivered *</h6>
+                                          <span style="color: rgb(0, 0, 0); font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;"><span style="font-size: medium;"> <span  style="color: #515151;"">product price: </span><%= data.product.price %>/-</span></span> 
+                                          <span style="color: rgb(0, 0, 0); font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;"><span style="font-size: medium;"><span style="color: #515151;">product totalprice:</span><%= data.Totalprice %>/-</span></span> 
+                                          <p style="color: rgb(0, 0, 0);">Delivered Date: <%= data.date.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: '2-digit' }).replace(/\//g, '-')  %></p> 
+
+
+
+                                         
+                                          <button type="button" class="btn btn-outline-danger" data-bs-toggle="modal" data-bs-target="#returnModal %>" > Return? </button>                          
+                                           <br><br>
+                                          <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#feedbackModal" data-whatever="@mdo" style="background-color: rgb(46, 202, 88);" >Add feedback</button>
+                                          <br><br>
+                                          <%}else{%>
+                                              <span style="color: rgb(0, 0, 0); font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;"><span style="font-size: medium;" ><span  style="color: #515151;">product price:</span> <%= data.product.price %>/-</span></span>
+                                              <span style="color: rgb(0, 0, 0); font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;"><span style="font-size: medium;"> <span  style="color: #515151;">product totalprice: </span><%= data.Totalprice %>/-</span></span> 
+
+                                              <% } %>
+                                              <h6 style="color: chocolate;"><span style="color:#000;">status:</span><%= order.status %></h6>
+                                              <!-- Button trigger modal -->
+                                              <% if( data.status != "cancelled" || data.status != "Delivered" || data.status != "returned" ){ %>
+                                               <button type="button" class="btn btn-outline-danger" data-bs-toggle="modal" data-bs-target="#exampleModal" > Cancel </button>                          
+                                              
+                                                 <% }else{ %>
+
+                                                  <button type="button" class="btn btn-outline-danger" data-bs-toggle="modal" data-bs-target="#returnModal %>" > Return? </button>
+
+                                                  <% } %>
+                                                   
+                                      </div><!-- End .product-price -->
+                                  </div><!-- End .product-body -->
+                              </div><!-- End .product -->
+                      
+                      </div><!-- End .col-sm-6 col-lg-4 col-xl-3 -->
+                    </div>
+                  </div>
+                      <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true"  >
+                        <div class="modal-dialog ">
+                            <form action="/orderCancel" method="post">
+                                <input type="hidden" value="<%= data._id %>" name="orderid">
+                                <input type="hidden" value="<%= data.Totalprice %>" name="totalPrice">
+                                
+                                
+                               
+                          <div class="modal-content" >
+                            <div class="modal-header">
+                              <h5 class="modal-title" id="exampleModalLabel">Reason for cancel</h5>
+                              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                
+                               <p class="mx-5 mt-2 "> <input type="radio" value=" Mind changed"  name="reason" required> <span class="font-weight-bold">  Mind changed </span></p>
+                               <p class="mx-5"> <input type="radio" value="Unexpected Shipping costs" name="reason" required> <span class="font-weight-bold">  Unexpected Shipping costs </span></p>
+                               <p class="mx-5 mb-2"> <input type="radio" value=" Arriving time is high" name="reason" required><span class="font-weight-bold">  Arriving time is high </span></p>
+                               <p class="mx-5 mb-2"> <input type="radio" value="other" name="reason" required><span class="font-weight-bold">  other  </span></p>
+                               
+                              </div>
+                              <div class="modal-footer" style="border: none;">
+                              <button type="button" class="btn-primary " data-bs-dismiss="modal" style="background-color: rgb(47, 255, 106);width: 5rem;border:none;">No</button>
+                              <button type="submit" class="btn-primary " style=" width: 5rem;border:none;" >Yes</button>
+                            </div>
+                          </div>
+                        </form>
+                        </div>
+                      </div>
+
+
+                      <div class="modal fade" id="returnModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true"  >
+                        <div class="modal-dialog ">
+                            <form action="/returnProduct" method="post">
+                                <input type="hidden" value="<%= data._id %>" name="orderid">
+                                <input type="hidden" value="<%= data.totalPrice %>" name="totalPrice">
+                                
+                                
+                               
+                          <div class="modal-content" >
+                            <div class="modal-header">
+                              <h5 class="modal-title" id="exampleModalLabel">Reason for return</h5>
+                              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                
+                               <p class="mx-5 mt-2 "> <input type="radio" value=" Mind changed"  name="reason" required> <span class="font-weight-bold">  Mind changed </span></p>
+                               <p class="mx-5"> <input type="radio" value="Low quality " name="reason" required> <span class="font-weight-bold">  Low quality  </span></p>
+                               <p class="mx-5 mb-2"> <input type="radio" value="Looking for another product" name="reason" required><span class="font-weight-bold">  Looking for another product</span></p>
+                               <p class="mx-5 mb-2"> <input type="radio" value="other" name="reason" required><span class="font-weight-bold">  other  </span></p>
+                               
+                              </div>
+                              <div class="modal-footer" style="border: none;">
+                              <button type="button" class="btn-primary " data-bs-dismiss="modal" style="background-color: rgb(47, 255, 106);width: 5rem;border:none;">No</button>
+                              <button type="submit" class="btn-primary " style=" width: 5rem;border:none;" >Yes</button>
+                            </div>
+                          </div>
+                        </form>
+                        </div>
+                      </div>
+
+                            <div class="modal fade" id="feedbackModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                        <div class="modal-dialog" role="document">
+                          <div class="modal-content">
+                            <div class="modal-header">
+                              <h5 class="modal-title" id="exampleModalLabel">New message</h5>
+                              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                              </button>
+                            </div>
+                     
+
+                           <!-- =================================== modaaal for the feedback here======================================== -->
+
+
+                        </div>
+                      </div>
+                    </div>
+                    </div>
+ 
+                      <% }) %>
+                      
+                      
+               
+          </div><!-- End .products -->
+        </div>
+        </div>
+        </main><!-- End .main -->
+<br>
+<br>
+
+<script>
+  // JavaScript code to capture orderid and totalprice when modal is opened
+  $(document).ready(function () {
+    $('#returnModal').on('show.bs.modal', function (event) {
+      var button = $(event.relatedTarget);
+      var orderid = button.data('orderid');
+      var totalprice = button.data('totalprice');
+
+      // Set the orderid and totalprice values in the modal form
+      $("#returnModal input[name='orderid']").val(orderid);
+      $("#returnModal input[name='totalPrice']").val(totalprice);
+    });
+  });
+</script>
+
+
+<%- include('../user/partial/userfooter.ejs')  %>

@@ -1,0 +1,349 @@
+<%- include('../user/partial/userheader2.ejs') -%>
+
+  <br>
+  <style>
+    /* Add your own custom styles here */
+
+    /* Table Styles */
+    .table-shopping-cart {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    .table_head th,
+    .table_row td {
+      text-align: left;
+      padding: 15px;
+      border-bottom: 1px solid #e5e5e5;
+    }
+
+    .table_head th {
+      background-color: #f9f9f9;
+      font-weight: bold;
+    }
+
+    .column-1,
+    .column-5 {
+      width: 15%;
+    }
+
+    .column-2 {
+      width: 30%;
+    }
+
+    .column-3,
+    .column-4 {
+      width: 20%;
+    }
+
+    /* Image Styles */
+    .how-itemcart1 img {
+      display: block;
+      width: 100%;
+      height: auto;
+    }
+
+    /* Quantity Input Styles */
+    .wrap-num-product {
+      display: flex;
+      align-items: center;
+    }
+
+    .btn-num-product-down,
+    .btn-num-product-up {
+      cursor: pointer;
+      padding: 8px;
+      border: 1px solid #ccc;
+    }
+
+    .num-product {
+      width: 40px;
+      text-align: center;
+      margin: 0 10px;
+    }
+
+    /* Remove Button Styles */
+    .product-remove {
+      width: 10%;
+      white-space: nowrap;
+    }
+
+    .butn-style2 {
+      background-color: #e85c41;
+      color: #fff;
+      border: none;
+      padding: 8px 10px;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 14px;
+      transition: background-color 0.3s ease;
+    }
+
+    /* Responsive Styles */
+    @media (max-width: 767px) {
+
+      .table_head th,
+      .table_row td {
+        padding: 10px;
+      }
+
+      .column-1,
+      .column-5 {
+        width: 20%;
+      }
+
+      .column-2 {
+        width: 40%;
+      }
+
+      .column-3,
+      .column-4 {
+        width: 20%;
+      }
+
+      .product-remove {
+        width: 20%;
+      }
+
+      .num-product {
+        width: 30px;
+        margin: 0 5px;
+      }
+    }
+  </style>
+  <div class="container" style="margin-top: 90px;">
+    <div class="bread-crumb flex-w p-l-25 p-r-15 p-t-30 p-lr-0-lg">
+      <a href="/" class="stext-109 cl8 hov-cl1 trans-04">
+        Home
+        <i class="fa fa-angle-right m-l-9 m-r-10" aria-hidden="true">></i>
+      </a>
+
+
+      <span class="stext-109 cl4">
+        Shopping Cart
+      </span>
+    </div>
+  </div>
+  <br>
+  <br>
+  <br>
+
+
+
+  <% if(cartData!=null && cartData.items.length !=0){ %>
+
+    <!-- 
+        <form class="bg0 p-t-75 p-b-85"> -->
+    <div id="reloadDiv">
+      <div class="container">
+        <h5><u><span style="color: rgb(213, 84, 84); font-family: Verdana, Geneva, Tahoma, sans-serif;">Shopping
+            </span>Cart</u></h5>
+        <div class="row">
+          <div class="col-12 m-b-50">
+            <div class="m-lr-0-xl">
+              <div class="table-responsive">
+                <table class="table table-shopping-cart">
+                  <thead class="table_head">
+                    <tr>
+                      <th class="column-1">Product</th>
+                      <th class="column-2">Name</th>
+                      <th class="column-3">Price</th>
+                      <th class="column-4">Quantity</th>
+                      <th class="column-5">Total</th>
+                      <th class="column-6">Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <% for (cart of cartData.items) { %>
+                      <tr class="table_row" id="removeDiv <%= cart._id %>">
+                        <td class="column-1">
+                          <div class="how-itemcart1">
+                            <% if(cart?.product?.images && cart?.product?.images.length>0){ %>
+                              <img src="/productimages/<%= cart?.product?.images[0] %> " alt="IMG"
+                                style="max-width: 70px; height: auto;">
+                              <% } %>
+
+                          </div>
+
+                        </td>
+                        <td class="column-2"><%- cart.product?.productName %></td>
+                        <td class="column-3">$<%- cart.product?.price %></td>
+
+
+                        <td class="quantity-col">
+                          <input style="width: 5vw;" type="button"
+                            onclick="changeQuantity('<%= cart.user %>','<%= cart.product._id %>','<%= cart.product.price %>' , '<%= cart.quantity - 1 %>')"
+                            class="btneg" value="-">
+
+                            
+                          <input style="width: 5vw;" type="text" id="<%= cart.product._id%>" name="quantity"
+                            class="quantity form-control input-number text-center"  value="<%= cart.quantity %>">
+
+                          <input style="width: 5vw;" type="button"
+                            onclick="changeQuantity('<%= cart.userId %>','<%= cart.product._id %>','<%= cart.product.price %>' , '<%= cart.quantity + 1 %>')"
+                            class="btpos" value="+">
+                        </td>
+
+
+
+
+                        <td class="column-5" id="proTotal">$<%- cart.Totalprice %></td>
+
+                        <td>
+                          <a href="#" class="genric-btn danger circle" id="delete"
+                            onclick="deleteCart('<%= cart.product._id %>')"><button
+                              style="color: #fff ; background-color: rgb(1, 1, 1);">Remove</button></a>
+
+                        </td>
+
+
+                      </tr>
+                      <% } %>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-sm-10 col-lg-7 col-xl-5 m-lr-auto m-b-50">
+            <br>
+            <div class="bor10 p-lr-40 p-t-30 p-b-40 m-l-63 m-r-40 m-lr-0-xl p-lr-15-sm">
+              <h4 class="mtext-109 cl2 p-b-30" id="alltotal">
+                Cart Totals : $<%-cartData.cartTotal %>
+              </h4>
+              <a href="/checkout"><button style="background-color: rgb(147, 147, 147);" class="btn11"
+                  class="flex-c-m stext-101 cl0 size-116 bg3 bor14 hov-btn3 p-lr-15 trans-04 pointer">
+                  Proceed to Checkout
+                </button></a>
+
+
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- </form> -->
+
+    <% } else { %>
+      <div class="mb-5 d-flex justify-content-center align-items-center flex-column">
+        <!-- add some gifs for showing oops its not here like thing -->
+        <img src="" alt="">
+        <h5 class=" pb-3 text-center"
+          style="font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif; font-weight: bold; margin-top: -10px;">
+          Oops! Your cart is empty .Please add few products</h5>
+        <a class="mb-5 btn btn-success mt-5" href="/">Back To Home</a>
+      </div>
+
+
+      <% } %>
+
+
+        <script src="https://code.jquery.com/jquery-3.6.2.js"
+          integrity="sha256-pkn2CUZmheSeyssYw3vMp1+xyub4m+e+QK4sQskvuo4=" crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+
+
+        <script>
+          function changeQuantity(userId, productId, price, newQuantity) {
+            if (newQuantity >= 1) { // Make sure the new quantity is not less than 1
+             if(newQuantity < 0){
+               newQuantity = 0
+             }
+
+            $.ajax({
+              url: '/cartQuantityIncrease',
+              data: {
+                userId,
+                productId,
+                quantity: newQuantity
+              },
+              method: 'post',
+              success: (response) => {
+                console.log('AJAX Success:', response); // Add this line for debugging
+                if (response.success) {
+                  $('#reloadDiv').load('/cart #reloadDiv', () => {
+                    // Update the cart total in the page
+                    $("#alltotal").text(`Cart Totals :  $${response.updatedCartTotal}`);
+                  });
+                } else if (response.check) {
+                  // Handle out of stock error
+                  alert('Product is out of stock');
+                } else {
+                  // Handle other errors
+                  alert('An error occurred');
+                }
+              },
+              error: (error) => {
+                console.log('AJAX Error:', error); // Add this line for debugging
+              }
+            });
+            } else {
+            }
+          }
+        </script>
+
+
+
+
+
+        <script>
+//   function changeqty(userId, productId, price, newQuantity) {
+//     const value = parseInt(document.getElementById(productId).value);
+//     if (value < 1) {
+//       alert("Please enter a positive number");
+//     } else {
+//       $.ajax({
+//         url: '/cartQuantityIncrease',
+//         data: {
+//           userId: userId,
+//           productId: productId,
+//           value: value,
+//           price: price, // Include the price here
+//         },
+//         method: 'post',
+//         encoded: true,
+//       }).done((data) => {
+//         if (data.success) {
+//           location.reload();
+//         } else {
+//           swal("Oops!", "Out of stock", "error");
+//         }
+//       });
+//     }
+// }
+
+// </script>
+
+<script>
+  function deleteCart(id) {
+    Swal.fire({
+      title: 'Are you sure?',
+      text: 'You are about to delete this item from the cart.',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Yes, delete it!',
+      cancelButtonText: 'Cancel'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        $.ajax({
+          url: "/deleteCart",
+          method: "post",
+          encoded: true,
+          data: {
+            id: id
+          },
+          success: (response) => {
+            if (response.success === true) {
+              $("#alltotal").text(`Cart Totals :  $${response.updatedCartTotal}`);
+              window.location.reload();
+            }
+          }
+        });
+      }
+    });
+  }
+</script>
+-
+
+
+        <%- include('../user/partial/userfooter.ejs') -%>

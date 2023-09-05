@@ -1,0 +1,137 @@
+<%- include("../user/partial/userheader2.ejs") %>
+<br>
+<br>
+<br>
+<br>
+<br>
+
+<div class="page-content">
+    <div class="container">
+        <% if (wishlist.length > 0) { %>
+        <table class="table table-wishlist table-mobile">
+            <thead>
+                <tr>
+                    <th>Product</th>
+                    <th>Price</th>  
+                    <th>Quantity</th>
+                    <th>Category Id</th>
+                    <th>View</th>
+                    <th>Add to Cart</th>
+                    <th></th>
+                </tr>
+            </thead>
+                <% wishlist.forEach((wish) => { %>
+                    <tbody>
+                        <tr>
+                            <td class="product-col">
+                                <div class="product">
+                                    <figure class="product-media">
+                                        <a href="/productdetails?id=<%= wish.productId._id%>">
+                                            <img src="/productimages/<%= wish.productId.images[0] %>" alt="Product image">
+                                        </a>
+                                    </figure>
+                                    <h3 class="product-title">
+                                        <a href="#"><%= wish.productId.productName %></a>
+                                    </h3>
+                                </div>
+                            </td>
+                            <td style="font-size: large;">Rs: <%= wish.productId.price %>/-</td>
+                            <td>
+                                <% if (wish.productId.quantity <= 5 && wish.productId.quantity != 0) { %>
+                                    <p style="font-size: medium; color: rgb(246, 79, 19); font-weight: 300;">
+                                        Only <%= wish.productId.quantity %> left !
+                                    </p>
+                                <% }else{ %>
+                                    <p style="font-size: medium; color: rgb(58, 248, 0); font-weight: 300;">
+                                        On Stock
+                                    </p>
+                              <%  } %>
+                            </td>
+                            <td><span class="in-stock"><%= wish.productId.category %></span></td>
+
+                            <td style="font-size: large;"><a href="/product-details/<%= wish.productId._id %>" type="button" style="background-color: rgb(0, 0, 0);" >View</a></td>
+
+                         
+                            <td style="width: 10vw;">
+                                    <a href="" onclick="AddToCart('<%= wish.productId._id %>')" class="btn-product btn-cart"><span style="background-color: black;">add to cart</span></a>
+                            </td>
+                            <td class="remove-col">
+                                <a href="/removeItem?id=<%= wish.productId._id %>">
+                                    <button class="btn-remove">
+                                        <i class="icon-close"></i>
+                                    </button>
+                                </a>
+                            </td>
+                        </tr>
+                    </tbody>
+                <% }); %>
+            <% } else { %>
+                <div class="error-content text-center">
+                    <div class="container">
+                        <h1 class="error-title">
+                            <span style="color: rgb(158, 81, 82);">Your</span> wishList is empty
+                        </h1>
+                        <p>Add Products in Wish List</p>
+                        <a href="/shop" class="btn btn-outline" style="color: rgb(169, 75, 89);">
+                            <span>Keep shopping</span>
+                            <i class="">>>></i>
+                        </a>
+                    </div>
+                </div>
+            <% } %>
+        </table><!-- End .table table-wishlist -->
+    </div><!-- End .container -->
+</div><!-- End .page-content -->
+
+<script>
+	function AddToCart(Id) {
+		$.ajax({
+			url: '/add-to-cart',
+			data: {
+				productId: Id
+			},
+			method: 'post',
+			success: (response) => {
+				if (response.status) {
+					const cartMessage = document.getElementById('cart-message');
+					cartMessage.style.display = 'block';
+
+					// Hide the message after 2 seconds
+					setTimeout(() => {
+           				cartMessage.style.display = 'none';
+          			}, 2000);
+
+					// Show Swal.fire success message
+					Swal.fire({
+						position: 'top-end',
+						icon: 'success',
+						title: 'Product added to cart',
+						showConfirmButton: false,
+						timer: 1500
+					});
+
+					if (response.success) {
+						swal("Success", response.message, "success").then(() => {
+							window.location.reload();
+						});
+					} else {
+						swal("Error", response.message, "error");
+					}
+				} else {
+					alert("Already existing in your cart ");
+					Swal.fire({
+						icon: 'error',
+						title: 'Oops...',
+						text: 'Item already exists in cart',
+						timer: 1000
+					});
+				}
+			}
+		});
+	}
+</script>
+<br>
+<br>
+<br>
+
+<%-include('../user/partial/userfooter.ejs')  %>

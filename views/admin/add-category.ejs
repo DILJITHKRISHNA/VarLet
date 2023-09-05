@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        /* CSS Styling */
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: black;
+            color: white;
+        }
+        
+        .sidenav {
+            height: 100%;
+            width: 200px;
+            background-color: #191c24;
+            position: fixed;
+            top: 0;
+            left: 0;
+        }
+        
+        .sidenav a {
+            padding: 16px;
+            text-decoration: none;
+            display: block;
+            color: #fff;
+        }
+        
+        .header {
+            background-color: #191c24;
+            color: #fff;
+            padding: 20px;
+            text-align: center;
+        }
+        
+        .content {
+            padding: 20px;
+            margin-left: 200px; /* Adjust this value to match the width of the sidebar */
+        }
+        
+        form {
+            display: flex;
+            flex-direction: column;
+            align-items: center; /* Center the form horizontally */
+            justify-content: center; /* Center the form vertically */
+        }
+        
+        label {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        
+        input[type="text"],
+        textarea {
+            width: 100%;
+            padding: 8px;
+        }
+        
+        button[type="submit"] {
+            align-self: flex-end;
+            padding: 8px 16px;
+            background-color: #6c7293;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        
+        /* Media Query for Responsive Design */
+        @media (max-width: 768px) {
+            .content {
+                margin-left: 0;
+                padding: 20px;
+            }
+            
+            .header {
+                text-align: left;
+            }
+            
+            .sidenav {
+                width: 100%;
+                height: auto;
+                position: static;
+                margin-bottom: 20px;
+            }
+            
+            .sidenav a {
+                padding: 10px;
+            }
+        }
+        
+    </style>
+    
+</head>
+<body>
+   <div class="sidenav" style="margin-top: 0;">
+    <a href="./adminhome">Dashboard</a>
+    <a  href="list-product">Product </a>
+    <a style="color: red;" href="#">Category</a>
+    <a href="./list-user">User Management</a>
+    <a href="./listOrder">Order Management</a>
+    <a href="./salesReport">Sales Report</a>
+
+
+    <!-- Add more menu items as needed -->
+  </div>
+
+    <div class="header" style="background-color: #191c24; color: #fff; padding: 20px; text-align: center;">
+        <h2 style="font-size: 24px;color: red;">Add Category</h2>
+        <!-- Add header content here -->
+    </div>
+    
+
+   <form action="./add-category" method="post">
+      <div class="container">
+            <div class="col-md-6">
+                    <div class="form-group">
+                        <label style="color: rgb(255, 255, 255);">Category:</label>
+                        <input type="text" name="category" class="form-control" id="name" placeholder="Enter category" style="background-color: white;" required>
+                    </div>
+                    <br>
+                    <button type="submit" class="btn btn-primary">Add Category</button>
+                    <%
+                      if(typeof message !=='undefined'){
+                          %>
+                          <p style="color:#fb4e37"><%= message %></p>
+                          <%
+                      }
+                      %>
+            </div>
+        </div>
+    </form>
+    
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+</body>
+</html>

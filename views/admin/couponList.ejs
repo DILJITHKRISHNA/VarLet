@@ -1,0 +1,629 @@
+<%- include('../admin/partial/adminheader.ejs')  %>
+
+<!DOCTYPE html>
+<html>
+<head>
+  <title>List Product</title>
+  <style>
+    /* CSS Styling */
+    body {
+      margin: 0;
+      padding: 0;
+      background-color: black;
+      color: white;
+    }
+    
+    .sidenav {
+      height: 100%;
+      width: 200px;
+      background-color: #191c24;
+      position: fixed;
+      top: 0;
+      left: 0;
+    }
+    
+    .sidenav a {
+      padding: 16px;
+      text-decoration: none;
+      display: block;
+      color: #fff;
+    }
+    
+    .header {
+      background-color: #191c24;
+      color: #fff;
+      padding: 20px;
+      text-align: center;
+    }
+    
+    .content {
+      padding: 20px;
+      margin-left: 200px; /* Adjust this value to match the width of the sidebar */
+    }
+    
+    form {
+      display: flex;
+      flex-direction: column;
+    }
+    
+    label {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 10px;
+    }
+    
+    input[type="text"],
+    textarea {
+      width: 100%;
+      padding: 8px;
+    }
+    
+    button[type="submit"] {
+      align-self: flex-end;
+      padding: 8px 16px;
+      background-color: #6c7293;
+      color: white;
+      border: none;
+      cursor: pointer;
+    }
+    
+    /* Media Query for Responsive Design */
+    @media (max-width: 768px) {
+      .content {
+        margin-left: 0;
+        padding-left: 20px;
+        padding-right: 20px;
+      }
+      
+      .header {
+        text-align: left;
+      }
+      
+      .sidenav {
+        width: 100%;
+        height: auto;
+        position: static;
+        margin-bottom: 20px;
+      }
+      
+      .sidenav a {
+        padding: 10px;
+      }
+      
+      table {
+        font-size: 14px;
+      }
+      
+      @media (max-width: 576px) {
+        table {
+          font-size: 12px;
+        }
+      }
+    }
+    /* CSS Styling */
+    
+    .table-container {
+      max-width: 100%;
+      overflow-x: auto;
+    }
+    
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      border: 1px solid white;
+    }
+    
+    th, td {
+      border: 1px solid white;
+      padding: 8px;
+      text-align: left;
+    }
+    
+    .table-light th {
+      background-color: #f8f8f8;
+    }
+    
+    .badge {
+      background-color: #4CAF50;
+      color: white;
+      padding: 4px 8px;
+      border-radius: 4px;
+    }
+    
+    .edit-button, .delete-button {
+      background-color: #6c7293;
+      color: white;
+      border: none;
+      padding: 4px 8px;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+
+    /* Media Query for Responsive Design */
+    @media (max-width: 768px) {
+      .table-container {
+        width: 100%;
+      }
+      
+      .edit-button, .delete-button {
+        font-size: 12px;
+      }
+    }
+    .btn {
+  display: inline-block;
+  padding: 8px 16px;
+  border: none;
+  border-radius: 5px;
+  text-decoration: none;
+  color: #ffffff; /* Text color (white) */
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+/* Light blue button style */
+.btn-light-blue {
+  background-color: #add8e6; /* Light blue color */
+}
+
+/* Hover effect */
+.btn-light-blue:hover {
+  background-color: #87ceeb; /* Lighter shade of blue on hover */
+}
+.custom-font {
+  font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif; /* Replace with your desired font-family */
+  font-size: 24px; /* Replace with your desired font size */
+  font-weight: bold; /* Replace with your desired font weight */
+  color: #ffffff;
+}
+  </style>
+</head>
+<body>
+  <div class="sidenav" style="margin-top: 0;">
+    <a href="./adminhome">Dashboard</a>
+    <a href="./list-product" class="active">Product</a>
+    <a href="./list-category">Category</a>
+    <a href="./list-user">User</a>
+    <a href="./listOrder">Order</a>
+    <a style="color: red;" href="./couponList">Coupon</a>
+    <a href="./salesReport">sales Report</a>
+
+    <!-- Add more menu items as needed -->
+  </div>
+
+  <div class="header" style="background-color: #191c24; color: #fff; padding: 20px; text-align: center;">
+    <h2 style="font-size: 24px; color: red;">List Coupon</h2>
+    <!-- Add header content here -->
+  </div>
+  <br>
+  
+  <%if(coupons.length>0){%>
+  <div class="content">
+    <table class="table table-dark">
+        <thead>
+          <tr>
+              <th style="font-size: large;"> Number </th>
+              <th style="font-size: large;"> Coupon name </th>
+              <th style="font-size: large;"> Coupon code </th>
+              <th style="font-size: large;"> Discount %</th>
+              <th style="font-size: large;"> activationDate </th>
+              <th style="font-size: large;"> expiryDate </th>
+              <th style="font-size: large;"> Coupon limit </th>
+              <th style="font-size: large;"> Status</th>
+              <th style="font-size: large;"> Edit</th>
+              <th style="font-size: large;"> Delete</th>
+
+          </tr>
+        </thead>
+        <tbody>
+          <% coupons.forEach((data,i)=>{ %>
+            <tr>
+              <td style="color: aliceblue;">
+                <%= i + 1 %>
+              </td>
+              <td style="color: aliceblue;">
+                <%= data.couponName %>
+              </td>    
+              <td style="color: aliceblue;">
+                <%= data.couponCode %>
+              </td> 
+              <td style="color: aliceblue;">
+                <%= data.discountPercentage %>%
+              </td> 
+              <td style="color: aliceblue;">
+                <%= data.activationDate.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: '2-digit' }).replace(/\//g,'-') %>
+              </td>  
+              <td style="color: aliceblue;">
+                <%= data.expiryDate.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: '2-digit' }).replace(/\//g,'-') %>
+              </td>
+              
+              <td style="color: aliceblue;">
+                <%= data.usersLimit %>
+              </td>
+
+              <td style="color: aliceblue;">
+
+                <% if(data.status != true){%>
+                  <p>Expired</p>
+                  <%}else{%>
+                    <% if(data.activationDate > todaydate ){%>
+                    <p style="color: rgb(255, 234, 0);">Coming soon!</p>
+                      <%}else{%>
+                    <p style="color: chartreuse;">Valid</p>
+                    <%}%>
+                  <%}%>
+
+              </td>
+              
+            <td>
+              <button type="button" class="btn btn-primary btn-sm" style="color: rgb(255, 255, 255);" data-toggle="modal" data-target="#modalEditForm-<%= data._id %>">Edit</button>
+            </td>
+            <td>
+              <a><button onclick="confirmDeleteCoupon('<%= data._id %>')" type="button"
+              class="btn btn-outline-danger btn-icon-text">
+              Delete </button></a>
+            </td>
+            </tr>
+
+            <div class="modal fade" id="modalEditForm-<%= data._id %>" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+                aria-hidden="true" style="background-color: rgba(255, 255, 255, 0.682);">
+              <div class="modal-dialog" role="document">
+          <div class="modal-content">
+          <div id="erroredit" style="color: chocolate;"></div>
+          <form  id=" "  action="/admin/editCoupon/<%= data._id %>" method="post"  >
+            <div class="modal-header text-center">
+              <h4 class="modal-title w-100 font-weight-bold">Code</h4>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body mx-3">
+              <div class="md-form mb-5">
+                <label data-error="wrong" data-success="right" for="orangeForm-name">Coupon Name</label>
+              <input type="text" id="couponNameedit" name="couponName" class="form-control validate" value="<%= data.couponName %>" >
+            </div>
+              <div class="md-form mb-5">
+                  <label data-error="wrong" data-success="right" for="orangeForm-name">Coupon code</label>
+                <input type="text" id="couponCodeedit" name="couponCode" class="form-control validate" value="<%= data.couponCode %>" >
+              </div>
+              <div class="md-form mb-5">
+                  <label data-error="wrong" data-success="right" for="orangeForm-email">Discount</label>
+                <input type="number" min="1" id="discountPercentageedit" name="discountPercentage" class="form-control validate" value="<%= data.discountPercentage %>" >
+              </div>
+
+              <div class="md-form mb-5">
+                <label data-error="wrong" data-success="right" for="orangeForm-email">CriteriaAmount</label>
+              <input type="number" min="1" id="criteriaAmountedit" name="criteriaAmount" class="form-control validate" value="<%= data.criteriaAmount %>" >
+            </div>
+      
+              <div class="md-form mb-4">
+                  <label data-error="wrong" data-success="right" for="orangeForm-pass">Activation date</label>    
+                <input type="text" id="activationDateedit"  name="activationDate" class="form-control validate" value="<%= data.activationDate.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: '2-digit' }).replace(/\//g,'-') %>" >
+              </div>
+      
+              <div class="md-form mb-4">
+                  <label data-error="wrong" data-success="right" for="orangeForm-pass">Expiry date</label>       
+                  <input type="text" id="expiryDateedit" name="expiryDate" class="form-control validate" value="<%= data.expiryDate.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: '2-digit' }).replace(/\//g,'-') %>" >
+                </div>
+              
+                 <div class="md-form mb-4">
+                  <label data-error="wrong" data-success="right" for="orangeForm-pass">Users limit</label>       
+                  <input type="number" min="1" id="usersLimitedit" name="usersLimit" class="form-control validate" value="<%= data.usersLimit %>" >
+                 </div>
+
+            </div>
+            <div class="modal-footer d-flex justify-content-center">
+              <button type="submit" class="btn btn-deep-orange">submit</button>
+            </div>
+            </form>
+          </div>
+            </div>
+              </div>
+            <% })%>
+              <%}else{%>
+                <div class="container">
+                <h1 style="text-align: center; ">Empty coupon list</h1>
+              </div>
+                <%}%>
+        </tbody>
+      </table>
+
+      <div class="card-body" style="text-align: center;">
+        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal" data-bs-whatever="@mdo">
+      000
+      </button>
+      </div>
+
+</div>
+
+</body>
+</html>
+
+
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">New message</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <h3><span style="color: rgb(207, 83, 83);">Add </span><span style="color: rgb(0, 0, 0);">Coupon</span></h3>
+      <form id="couponForm" method="post">
+          <div class="mb-3">
+            <label for="couponName" class="col-form-label" style="color: #191c24;">couponName:</label>
+            <input type="text" class="form-control" id="couponName" name="couponName">
+          </div>
+          <div class="mb-3">
+            <label for="couponCode" class="col-form-label" style="color: #191c24;">couponCode:</label>
+            <input type="text" class="form-control" id="couponCode" name="couponCode">
+          </div>
+          <div class="mb-3">
+            <label for="discountPercentage" class="col-form-label" style="color: #191c24;">discountPercentage %:</label>
+            <input type="number" class="form-control" id="discountPercentage" name="discountPercentage">
+          </div>
+          <div class="mb-3">
+            <label for="activationDate" class="col-form-label" style="color: #191c24;" >activationDate:</label>
+            <input type="date" class="form-control" id="activationDate" name="activationDate">
+          </div>
+          <div class="mb-3">
+            <label for="expiryDate" class="col-form-label" style="color: #191c24;">expiryDate:</label>
+            <input type="date" class="form-control" id="expiryDate" name="expiryDate">
+          </div>
+          <div class="mb-3">
+            <label for="criteriaAmount" class="col-form-label" style="color: #191c24;">criteriaAmount:</label>
+            <input type="number" class="form-control" id="criteriaAmount" name="criteriaAmount">
+          </div> 
+          <div class="mb-3">
+            <label for="usersLimit" class="col-form-label" style="color: #191c24;">usersLimit:</label>
+            <input type="number" class="form-control" id="usersLimit" name="usersLimit">
+          </div>
+        </div>
+          
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          <div class="modal-footer d-flex justify-content-center">
+            <button onclick="checkCoupon()" type="submit" id="submitCoupon" class="btn btn-deep-orange">submit</button>
+          </div>      
+        </div>
+      </form>
+      </div>  
+    </div>
+  </div>
+</div>
+
+<script>
+  function confirmDeleteCoupon(couponId) {
+  Swal.fire({
+    title: 'Are you sure?',
+    text: 'You won\'t be able to revert this!',
+    icon: 'warning',
+    showCancelButton: true,
+    confirmButtonColor: '#3085d6',
+    cancelButtonColor: '#d33',
+    confirmButtonText: 'Yes, delete it!',
+  }).then((result) => {
+    if (result.isConfirmed) {
+      // If the user confirms, you can perform the delete action here
+      window.location.href = `/admin/deleteCoupon?id=${couponId}`;
+    } else {
+      // If the user cancels, you can choose to do nothing or handle it differently
+    }
+  });
+
+  // Prevent the default behavior of the link
+  return false;
+}
+
+
+</script>
+
+<script>
+
+  function checkCoupon(){
+
+    document.addEventListener("DOMContentLoaded", function() {
+  // Add an event listener to the submit button
+  const submitButton = document.getElementById('submitCoupon');
+  const form = document.getElementById('couponForm');
+  const errorElement = document.getElementById('error');
+
+  submitButton.addEventListener('click', function() {
+
+  const couponName = document.getElementById('couponName')
+  const couponCode = document.getElementById('couponCode')
+  const discountPercentage = document.getElementById('discountPercentage')
+  const activationDate = document.getElementById('activationDate')
+  const criteriaAmount = document.getElementById('criteriaAmount')
+  const expiryDate = document.getElementById('expiryDate')
+  const usersLimit = document.getElementById('usersLimit')
+    $.ajax({
+      url:"/couponList",
+      data:{
+        couponName,
+        couponCode,
+        discountPercentage,
+        activationDate,
+        criteriaAmount,
+        expiryDate,
+        usersLimit
+      },
+      method:"post",
+      success: (response) => {
+    if (response.success) {
+      swal.fire({
+        title: 'Error',
+        text: 'Coupon already exists!',
+        icon: 'error',
+        timer: 2500,
+        showConfirmButton: false
+      });
+    }
+  }
+
+    })
+  });
+  });
+  }
+
+  const formAdd = document.getElementById('formAdd')
+  const actdate = document.getElementById('activationDate')
+  const expdate = document.getElementById('expiryDate')
+  const couponName = document.getElementById('couponName')
+  const couponCode = document.getElementById('couponCode')
+  const usersLimit = document.getElementById('usersLimit')
+  const criteriaAmount = document.getElementById('criteriaAmount')
+  const discountAmount = document.getElementById('discountPercentage')
+
+  const errorElement = document.getElementById('error')
+
+  formAdd.addEventListener("submit",(e)=>{
+    let messages = []
+
+    if( actdate.value > expdate.value){
+      messages.push("Please add valid dates")
+    }
+
+    if(couponName.value.trim() == null||couponName.value.trim() ==""){
+      messages.push("Please add coupon name")
+    }
+
+    if(couponName.value.trim().length > 15 ){
+      messages.push("Coupon name only containe 15 characters")
+    }
+    if(couponName.value.trim().length < 5 ){
+      messages.push("Coupon name minimum containe 5 characters")
+    }
+
+    if(couponCode.value.trim() == null||couponCode.value.trim() ==""){
+      messages.push("Please add couponcode ")
+    }
+
+
+    if(usersLimit.value.trim() == null||usersLimit.value.trim() ==""){
+      messages.push("Please add userslimit ")
+    }
+    
+    if(usersLimit.value.trim() == 0){
+      messages.push("Add a minimum userslimit ")
+    }
+    
+    if(criteriaAmount.value.trim() == null||criteriaAmount.value.trim() ==""){
+      messages.push("Please add critiria amount ")
+    }
+    
+    
+    if(criteriaAmount.value.trim() == 0 ){
+      messages.push("Add a minimum criteria amount ")
+    }
+  
+    
+    
+    if(couponCode.value.trim().length < 6){
+      messages.push("Coupon code minimum contain 6 characters ")
+    }
+
+    if(couponCode.value.trim().length > 10 ){
+      messages.push("Coupon code maximum contain 10 characters only ")
+    }
+
+  
+    if(discountAmount.value.trim() == null||discountAmount.value.trim() ==""){
+      messages.push("Please add discount amount ")
+    }
+  
+    if(criteriaAmount.value.trim() == 0 ){
+      messages.push("Add a minimum discount amount ")
+    }
+    
+
+
+    if( messages.length >0){
+      e.preventDefault()
+      errorElement.innerText = messages.join(',')
+    }
+
+  })
+
+  const form = document.getElementById('form')
+  const actdateedit = document.getElementById('activationDateedit')
+  const expdateedit = document.getElementById('expiryDateedit')
+  const couponNameedit = document.getElementById('couponNameedit')
+  const couponCodeedit = document.getElementById('couponCodeedit')
+  const usersLimitedit = document.getElementById('usersLimitedit')
+  const criteriaAmountedit = document.getElementById('criteriaAmountedit')
+  const discountAmountedit = document.getElementById('discountPercentageedit')
+  const errorElementedit = document.getElementById('erroredit')
+alert("hiiii")
+alert(actdateedit)
+  form.addEventListener("submit",(e)=>{
+    
+    let messages = []
+
+    if( actdateedit.value > expdateedit.value){
+      messages.push("Please add valid dates")
+    }
+
+    if(couponNameedit.value.trim() == null||couponNameedit.value.trim() ==""){
+      messages.push("Please add coupon name")
+    }
+
+    if(couponNameedit.value.trim().length > 15 ){
+      messages.push("Coupon name only containe 15 characters")
+    }
+    if(couponNameedit.value.trim().length < 5 ){
+      messages.push("Coupon name minimum containe 5 characters")
+    }
+
+    if(couponCodeedit.value.trim() == null||couponCodeedit.value.trim() ==""){
+      messages.push("Please add couponcode ")
+    }
+
+    if(usersLimitedit.value.trim() == null||usersLimitedit.value.trim() ==""){
+      messages.push("Please add userslimit ")
+    }
+    
+    if(usersLimitedit.value.trim() == 0){
+      messages.push("Add a minimum userslimit ")
+    }
+    
+    if(criteriaAmountedit.value.trim() == null||criteriaAmountedit.value.trim() ==""){
+      messages.push("Please add critiria amount ")
+    }
+    
+    
+    if(criteriaAmountedit.value.trim() == 0 ){
+      messages.push("Add a minimum criteria amount ")
+    }
+
+    if(couponCodeedit.value.trim().length < 6){
+      messages.push("Coupon code minimum  contain 6 characters ")
+    }
+
+    if(couponCodeedit.value.trim().length > 10 ){
+      messages.push("Coupon code maximum contain 10 characters ")
+    }
+
+  
+    if(discountAmountedit.value.trim() == null||discountAmountedit.value.trim() ==""){
+      messages.push("Please add discount amount ")
+    }
+  
+    if(criteriaAmountedit.value.trim() == 0 ){
+      messages.push("Add a minimum criteria amount ")
+    }
+    
+
+
+    if( messages.length >0){
+      e.preventDefault()
+      errorElement.innerText = messages.join(',')
+    }
+
+  })
+
+  </script>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>

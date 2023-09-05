@@ -1,0 +1,161 @@
+<%- include("../user/partial/userheader.ejs") %>
+<main class="main">
+    <div class="page-header text-center" style="background-color: #2e2e2e;">
+    </div><!-- End .page-header -->
+    <nav aria-label="breadcrumb" class="breadcrumb-nav">
+        <div class="container">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="/">Home</a></li>
+                <li class="breadcrumb-item"><a href="/checkout">Checkout</a></li>
+                <li class="breadcrumb-item active" aria-current="page">Update address </li>
+            </ol>
+        </div><!-- End .container -->
+    </nav><!-- End .breadcrumb-nav -->
+
+    <div class="container">
+        <h3 style="color: #2e2e2e;">Update <span style="color: rgb(187, 77, 77);">Address</span></h3>
+    </div><!-- End .container -->
+
+    <div class="page-content">
+        <div class="checkout">
+            <div class="container">
+                <div  id="error" style="color: red;"></div>
+                <form action="/updateAddress?id=<%= addresses._id %>" method="post" id="form">
+                    <div class="row">
+                        <div class="col-lg-9">
+                            <h2 class="checkout-title">Billing Details</h2><!-- End .checkout-title -->
+                                <div class="row">
+                                    <div class="col-sm-6">
+                                        <label>User Name</label>
+                                        <input type="text" id="userName" class="form-control" name="userName"  value="<%=addresses.userName %>">
+                                         
+                                    </div><!-- End .col-sm-6 -->
+                                </div><!-- End .row -->
+                                 
+                                 <div class="row">
+                                    <div class="col-sm-6">
+                                        <label>Mobile Number*</label>
+                                        <input type="text" id="mobile" name="mobile" class="form-control"value="<%=addresses.mobile %>">
+                                      
+                                         
+                                    </div><!-- End .col-sm-6 -->
+
+                                </div><!-- End .row -->
+
+                                <label>Housename*</label>
+                                  <input type="text" class="form-control" id="hoseName" name="hoseName"  placeholder="House number and Street name" value="<%=addresses.houseName %>">
+                                  
+
+                                      
+                                <div class="row">
+                                    <div class="col-sm-6">
+                                        <label>Town / City *</label>
+                                        <input type="text" name="city" id="city" class="form-control" value="<%=addresses.city%>">
+                                       
+
+
+                                    </div><!-- End .col-sm-6 -->
+
+                                    <div class="col-sm-6">
+                                        <label>State / County *</label>
+                                        <input type="text" name="state" id="state" class="form-control" value="<%=addresses.state%>">
+                                       
+
+                                    </div><!-- End .col-sm-6 -->
+                                </div><!-- End .row -->
+
+                                <div class="row">
+                                    <div class="col-sm-6">
+                                        <label>Postcode</label>
+                                        <input type="text" name="pincode" id="pincode" class="form-control" value="<%=addresses.pincode %>">
+                                        
+
+                                    </div><!-- End .col-sm-6 -->
+                                </div><!-- End .row -->
+
+                                
+                                <button type="submit" class="btn btn-outline-primary btn-rounded"  style="color: black; border-color: #2e2e2e;">
+                                    <span>SAVE CHANGES</span>
+                                    <i class="icon-long-arrow-right"></i>
+                                </button>
+                              
+                        </div><!-- End .col-lg-9 -->
+                    </div><!-- End .row -->
+                </form>
+            </div><!-- End .container -->
+        </div><!-- End .checkout -->
+    </div><!-- End .page-content -->
+</main><!-- End .main -->
+
+<script>
+
+    document.addEventListener('DOMContentLoaded', function () {
+            const form = document.getElementById('form');
+            form.addEventListener('submit', function (event) {
+                event.preventDefault(); // Prevent form submission
+    
+                // Get input field values
+                const userName = document.getElementById('name').value;
+                const mobile = document.getElementById('mobile').value;
+                const house = document.getElementById('hoseName').value;
+                const city = document.getElementById('city').value;
+                const state = document.getElementById('state').value;
+                const pincode = document.getElementById('pincode').value;
+                
+                const errorDiv = document.getElementById('error');
+                errorDiv.innerHTML = ''; // Clear previous error messages
+    
+                // Perform validation checks
+                let isValid = true;
+                
+                if (userName.trim() === '') {
+                    isValid = false;
+                    errorDiv.innerHTML += 'User Name is required.<br>';
+                }
+               
+                if (mobile.trim() === '') {
+                    isValid = false;
+                    errorDiv.innerHTML += 'Mobile number is required.<br>';
+                }
+    
+    
+                if (house.trim() === '') {
+                    isValid = false;
+                    errorDiv.innerHTML += 'House name and Street name is required.<br>';
+                }
+    
+                if (city.trim() === '') {
+                    isValid = false;
+                    errorDiv.innerHTML += 'City name is required.<br>';
+                }
+    
+                if (state.trim() === '') {
+                    isValid = false;
+                    errorDiv.innerHTML += 'State name is required.<br>';
+                }
+    
+                
+                if (isNaN(pincode) || pincode.trim() === '') {
+                    isValid = false;
+                    errorDiv.innerHTML += 'Pincode is required and must be a number.<br>';
+                }
+    
+                if (pincode.trim().length < 6 || pincode.trim().length > 6) {
+                    isValid = false;
+                    errorDiv.innerHTML += 'Please enter a valid pincode.<br>';
+                }
+    
+                if (mobile.trim().length != 10 || mobile2.trim().length != 10 || isNaN(mobile) || isNaN(mobile2)) {
+                    isValid = false;
+                    errorDiv.innerHTML += 'Please enter valid mobile numbers.<br>';
+                }
+    
+                if (isValid) {
+                    form.submit();
+                }
+            });
+        });
+    
+    </script> 
+
+<%- include("../user/partial/userfooter.ejs") %>
