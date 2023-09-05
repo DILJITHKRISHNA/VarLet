@@ -99,7 +99,7 @@ const loadHome = async (req, res) => {
         },
       },
     ]);
-    console.log(totalSales,"total salesssssssss");
+    console.log(totalSales,"total salessssssss");
     let totalAmount = 0;
 
     if (totalSales.length > 0) {
