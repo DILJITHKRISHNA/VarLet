@@ -13,6 +13,13 @@
             align-items: center;
             margin-bottom: 20px;
         }
+        @media (max-width: 768px) {
+        .filter-sort-container {
+            flex-direction: column;
+            text-align: center;
+            overflow: hidden; /* Hide overflow content */
+        }
+        }
 
         /* Label styling */
         .filter-sort-container label {
@@ -70,26 +77,29 @@
                 </ol>
                 <br>
                 <div class="row" id="product-container">
-                    <div class="filter-sort-container">
-                        <label for="category">Category:</label>
-                        <select id="category">
-                            <option value="">All</option>
-                            <% category.forEach((data)=> { %>
-                                <option value="<%= data._id %>">
-                                    <%= data.name %>
-                                </option>
+                <form action="/shop" method="get">
+                        <div class="filter-sort-container">
+                            <label for="category">Category:</label>
+                            <select id="category" name="category">
+                                <option value="">All</option>
+                                <% category.forEach((data) => { %>
+                                    <option value="<%= data._id %>">
+                                        <%= data.name %>
+                                    </option>
                                 <% }); %>
-                        </select>
-
-                        <label for="sort">Sort by:</label>
-                        <select id="sort">
-                            <option value="price-asc">Price: Low to High</option>
-                            <option value="price-desc">Price: High to Low</option>
-                            <!-- Add more sorting options as needed -->
-                        </select>
-
-                        <button onclick="applyFilters()">Apply Filters</button>
+                            </select>
+                    
+                            <label for="sort">Sort by:</label>
+                            <select id="sort" name="sort">
+                                <option value="price-asc">Price: Low to High</option>
+                                <option value="price-desc">Price: High to Low</option>
+                                <!-- Add more sorting options as needed -->
+                            </select>
+                  
+                    
+                        <button type="submit">Apply Filters</button>
                     </div>
+                </form>
                 </div>
             </div>
         </nav><!-- End .breadcrumb-nav -->

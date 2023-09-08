@@ -396,6 +396,8 @@ const loadshop = async (req, res) => {
   try {
     console.log(req.query, 'queryyyyy');
     const search = req.query.search || '';
+    const cat = req.query.category || '';
+    const price = req.query.sort || '';
     const page = req.query.page || 1;
     const limit = 8;
     const nameRegex = new RegExp(search, 'i');
@@ -408,7 +410,7 @@ const loadshop = async (req, res) => {
     if (req.query.sort) {
       sortOption = req.query.sort;
     }
-
+    
     console.log(sortOption,"sortoopptionnnnnn");
     if (req.query.search) {
       products = await Product.find({ list: true, $text: { $search: search } });
@@ -416,12 +418,19 @@ const loadshop = async (req, res) => {
       console.log(search, 'search.....');
       products = await Product.find({ list: true });
     }
+    if (req.query.category) {
+      products = await Product.find({ list: true, category: req.query.category });
+    }
 
-    if (sortOption === 'price-asc') {
+    else if (sortOption === 'price-asc') {
       products.sort((a, b) => a.price - b.price);
     } else if (sortOption === 'price-desc') {
       products.sort((a, b) => b.price - a.price);
+    }else if (req.query.category && req.query.sort) {
+
+      products = await Product.find({ list: true, category: req.query.category,price:price}).sort({ price: 1 }); 
     }
+
 
     const totalPages = Math.ceil(products.length / limit);
     products = products.slice((page - 1) * limit, page * limit);
