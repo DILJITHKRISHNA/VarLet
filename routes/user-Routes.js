@@ -6,7 +6,7 @@ const cartController = require('../controllers/cart-controller')
 const orderController = require('../controllers/order-controller')
 const productController = require('../controllers/product-controller')
 const couponController =  require('../controllers/coupon-controller')
-// const session=require('express-session')
+
 //view engine setup
 user_route.set('view engine', 'ejs');
 user_route.set('views','./views/user');
@@ -27,7 +27,6 @@ user_route.get('/resubmitPassword',userController.resetPassowrd)
 
 user_route.post('/insertUser',userController.insertUser);
 user_route.post('/login',userController.verifyLogin)
-// user_route.get('/logout',userController.loadLogout)
 
 // //home
 user_route.get("/",userController.loadHome)
@@ -53,8 +52,6 @@ user_route.get('/checkout',auth.blockedstatus,auth.verify_user,orderController.l
 user_route.post('/checkout',auth.verify_user,orderController.placeOrder);
 user_route.get("/orderSuccess/:id",auth.verify_user,orderController.successPage);
 user_route.post('/verify-payment',orderController.verifyPayment) 
-// router.get('/orderDetails/:id', orderController.getOrderDetails);
-// user_route.post('/add-checkout-address',orderController.addAddressCheckout)
 
 //product
 user_route.get('/product-details/:id',auth.blockedstatus,productController.loadUserProduct);
@@ -86,14 +83,7 @@ user_route.get("/invoice/:id",auth.verify_user,orderController.loadInvoice)
 user_route.post('/returnorder',orderController.returnProduct)
 
 //coupon
-// user_route.post('/applyCoupon',couponController.verifyCoupon)
-
-
-// //category
-// // user_route.get('/category',userController.loadcategory)
-// // user_route.get('/category',(req,res)=>{
-// //     res.render('category')
-// })
+user_route.post('/applyCoupon',couponController.verifyCoupon)
 
 //quickview
 user_route.get('/quickView',productController.quickview)

@@ -25,7 +25,9 @@
                 <div class="checkout-discount">
                     <form action="#">
                         <input type="text"  class="form-control" required id="checkout-discount-input" data-toggle="modal" data-target="#exampleModalLong" value="<%= couponCode %>" style="font-weight: 600; font-size: small;" placeholder="Click here to Get code">
-                        <button onclick="applycoupon('<%= totalamount %>')" id="button">Have a coupon? <span>Click here to enter your code</span></button>
+                        <button onclick="applycoupon('<%= totalamount %>')" id="button">Apply coupon</button>
+                        
+
                     </form>
                 </div><!-- End .checkout-discount -->   
                 <form id="checkout-form" method="post">
@@ -165,7 +167,7 @@
                <div class="card text-white bg-warning mb-3" style="max-width: 100%; align-items: center; border-color: black; border:1%;">
                 <div class="card-header" style="font-size: 400%;"><%= coupons.couponName %></div>
                 <div class="card-body">
-                  <h5 class="card-title" style="font-size:10vb;"><%= coupons.discountPercentage %>% <span style="color: rgb(119, 218, 19);">Dis</span>count</h5>
+                  <h5 class="card-title" style="font-size:10vb;"><%= coupons.discountPercentage %>% <span style="color: rgb(203, 71, 71);">Dis</span>count</h5>
                   <p class="card-text" style="color: black;">Coupon applicable for purchase above <%= coupons.criteriaAmount %>/- rupees</p>
                   <% if( coupons.activationDate > todayDate ){%>
                          <h6 style="font-weight: 800;color: rgb(0, 0, 0);">Coming Soon!</h6>
@@ -320,6 +322,7 @@ function razorPayment(order){
 
 function applycoupon(amount){
     const code = document.getElementById('checkout-discount-input').value
+   
    $.ajax({
        url:'/applyCoupon',
        data:{

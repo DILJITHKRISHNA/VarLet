@@ -1,6 +1,6 @@
 const couponDb = require("../models/coupon-Model");
 const userDb = require("../models/user-model");
-const { response } = require("../routes/user-Routes");
+
 const orderDb = require('../models/order-Model')
 
 //=================ADMIN LOAD COUPON=======================//
@@ -76,58 +76,59 @@ const editCoupon = async (req, res) => {
 };
 //=============== VARIFY COUPON FOR USER =====================
 
-// const verifyCoupon = async (req, res) => {
-//     try {
-//       const code = req.body.couponCode;
-//       console.log(code,"coupon codeeeeeeeeee");
-//       const amount = req.body.amount;
-//       console.log(amount,"amounttttttttttttt");
-//       const id = req.session.userId;
-//       console.log(id,"iddddddddddddddddddddd");
-//       const verifyData = await couponDb.findOne({
-//         couponCode: code,
-//         usedUsers: { $in: { id } },
-//       });
-//       if (verifyData) {
-//         res.json({ usedSuccess: true });
-//       } else {
-//         const couponData = await couponDb.findOne({ couponCode: code });
-//         if (couponData.expiryDate >= new Date()) {
-//           if (couponData.criteriaAmount <= amount) {
-//             if (couponData.usersLimit > 0) {
-//               await couponDb.findOneAndUpdate(
-//                 { _id: couponData._id },
-//                 {
-//                   $push: {
-//                     usedUsers: { id },
-//                   },
-//                   $inc: {
-//                     usersLimit: -1,
-//                   },
-//                 }
-//               );
-//               const percentage = Math.round(
-//                 (amount * couponData.discountPercentage) / 100
-//               );
-//               console.log(percentage);
-//               const lastTotal = Math.round(amount - percentage);
-//               console.log(lastTotal);
-//               res.json({ verifiedsuccess: true, lastTotal, percentage });
-//             } else {
-//               res.json({ limitsuccess: true });
-//             }
-//           } else {
-//             res.json({ critirianot: true });
-//           }
-//         } else {
-//           res.json({ notdate: true });
-//         }
-//       }
-//     } catch (error) {
-//       console.log(error.message);
-//     }
-//   };
+const verifyCoupon = async (req, res) => {
+    try {
+      const code = req.body.couponCode;
+      console.log(code,"coupon codeeeeeeeeee");
+      const amount = req.body.amount;
+      console.log(amount,"amounttttttttttttt");
+      const id = req.session.userId;
+      console.log(id,"iddddddddddddddddddddd");
+      const verifyData = await couponDb.findOne({
+        couponCode: code,
+        usedUsers: { $in: { id } },
+      });
+      if (verifyData) {
+        res.json({ usedSuccess: true });
+      } else {
+        const couponData = await couponDb.findOne({ couponCode: code });
+        if (couponData.expiryDate >= new Date()) {
+          if (couponData.criteriaAmount <= amount) {
+            if (couponData.usersLimit > 0) {
+              await couponDb.findOneAndUpdate(
+                { _id: couponData._id },
+                {
+                  $push: {
+                    usedUsers: { id },
+                  },
+                  $inc: {
+                    usersLimit: -1,
+                  },
+                }
+              );
+              const percentage = Math.round(
+                (amount * couponData.discountPercentage) / 100
+              );
+              console.log(percentage);
+              const lastTotal = Math.round(amount - percentage);
+              console.log(lastTotal);
+              res.json({ verifiedsuccess: true, lastTotal, percentage });
+            } else {
+              res.json({ limitsuccess: true });
+            }
+          } else {
+            res.json({ critirianot: true });
+          }
+        } else {
+          res.json({ notdate: true });
+        }
+      }
+    } catch (error) {
+      console.log(error.message);
+    }
+  };
 
+  
   const adminDeleteCoupon = async (req, res) => {
     console.log("entered into admindeletcoupon");
     try {
@@ -143,6 +144,6 @@ const editCoupon = async (req, res) => {
     loadCoupon,
     addCoupon,
     editCoupon,
-    // verifyCoupon,
+    verifyCoupon,
     adminDeleteCoupon,
   }

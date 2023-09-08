@@ -20,7 +20,6 @@ adminRoute.get('/',adminController.loadlogin);
 adminRoute.post('/',adminController.verifyAdmin);
 adminRoute.get('/logout',adminController.logout)
 
-// adminRoute.post('/',adminController.verifylogin);
 //adminDashboard
  adminRoute.get('/adminhome',adminController.loadHome)
 
@@ -44,12 +43,8 @@ adminRoute.post('/addproduct',upload.array('image',4),productController.addprodu
 adminRoute.get('/list-product',productController.loadListProduct);
 adminRoute.get('/edit-product/:id',productController.editproduct)
 adminRoute.post('/edit-product/:id',upload.array('newImage'), productController.productupdate)
- adminRoute.post("/removeimage",productController.removeImage)
- adminRoute.get('/imageCropper',productController.imageCropper)
-
-// adminRoute.get("/deleteproducts",auth.logged, productController.deleteproduct);
-
-// adminRoute.get('/delete-product',productController.deleteproduct)
+adminRoute.post("/removeimage",productController.removeImage)
+adminRoute.get('/imageCropper',productController.imageCropper)
 adminRoute.get('/ListProduct',productController.productlist);
 adminRoute.get('/unList-product',productController.productUnList);
 
@@ -71,9 +66,5 @@ adminRoute.post('/editCoupon/:id',couponController.editCoupon)
 adminRoute.get('/salesReport',adminController.loadSalesReport)
 adminRoute.post('/salesReportSort',adminController.sortsalesReport)
 adminRoute.get('/salesReportDownload',adminController.downloadSalesReport)
-
-
-
-// adminRoute.post("/admin",adminController.verifylogin)
 
 module.exports = adminRoute;
