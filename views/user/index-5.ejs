@@ -188,7 +188,7 @@
 
                             <div class="product product-2">
                                 <figure class="product-media">
-                                    <a href="product.html">
+                                    <a href="/product-details/<%= productData[i]._id %>">
                                         <img src="<%= '/admin/img/'+ productData[i].images[0] %>" alt="Product image" class="product-image">
                                         <!-- <img src="/userassets/images/demos/demo-5/products/product-1-2.jpg" alt="Product image" class="product-image-hover"> -->
                                     </a>
@@ -206,7 +206,7 @@
                                     <div class="product-cat">
                                         <a href="#">Clothing</a>
                                     </div><!-- End .product-cat -->
-                                    <h3 class="product-title"><a href="product.html"><%=productData[i].productName %></a></h3><!-- End .product-title -->
+                                    <h3 class="product-title"><a href="./product"><%=productData[i].productName %></a></h3><!-- End .product-title -->
                                     <div class="product-price">
                                        <% productData[i].price %>
                                     </div><!-- End .product-price -->

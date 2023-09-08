@@ -32,38 +32,38 @@
   </style>
 </head>
 <body>
-  <table>
-    <thead>
+<table>
+  <thead>
+    <tr>
+      <th>No</th>
+      <th>Order ID</th>
+      <th>Order Date</th>
+      <th>Payment Method</th>
+      <th>Status</th>
+      <th>Details</th>
+    </tr>
+  </thead>
+  <% if(orders.length > 0){ %>
+    <% orders.forEach((order, index) => { %>
       <tr>
-        <th>No</th>
-        <th>Order ID</th>
-        <th>Order Date</th>
-        <th>Payment Method</th>
-        <th>Status</th>
-        <th>Details</th>
-      </tr>
-    </thead>
-    <% if(orders.length > 0){ %>
-      <% orders.forEach((order, index) => { %>
-        <tr>
-          <td><%= index + 1 %></td>
-          <td><%= order.userId %></td>
-      <td><%= order.items[0].date.toLocaleDateString() %></td>
-          <td>$<%= order.totalAmount %></td>
-          <td><%= order.paymentMethod %></td>
-          <td id="<%= order._id %>"><b><%= order.status %></b></td>
-          <td>
-            <% if (order.status === 'Delivered') { %>
-              <button style="background-color: black; color: white;"><a onclick="returnorder('<%=order._id%>')">Return</a></button>
-            <% } else if(order.status !== 'returned' && order.status !== 'cancelled' ) { %>
-              <button style="background-color: black; color: white;" onclick="cancelOrder('<%= order._id %>','<%= order.totalAmount %>')">Cancel</button>
-            <% } %>
-          </td>
-          <td><button><a href="/orderdetails?id=<%= order._id %>">View</a></button></td>
-        </tr>   
-      <% }) %>
-    <% } %>
-  </table>
+        <td><%= index + 1 %></td>
+        <td><%= order.orderId %></td>
+    <td><%= order.items[0].date.toLocaleDateString() %></td>
+        <td>$<%= order.totalAmount %></td>
+        <td><%= order.paymentMethod %></td>
+        <td id="<%= order._id %>"><b><%= order.status %></b></td>
+        <td>
+          <% if (order.status === 'Delivered' && order.status !=='returned') { %>
+            <button style="background-color: black; color: white;"><a onclick="returnorder('<%=order._id%>')">Return</a></button>
+          <% } else if(order.status !== 'returned' && order.status !== 'cancelled' ) { %>
+            <button style="background-color: black; color: white;" onclick="cancelOrder('<%= order._id %>','<%= order.totalAmount %>')">Cancel</button>
+          <% } %>
+        </td>
+        <td><button><a href="/orderdetails?id=<%= order._id %>">View</a></button></td>
+      </tr>   
+    <% }) %>
+  <% } %>
+</table>
 <br>
 <br>
 <br>
@@ -100,8 +100,6 @@ function returnorder(orderId) {
     }
   })
 }
-</script>
-</body>
 </script>
 </body>
 

@@ -1,372 +1,359 @@
 <%- include('../user/partial/userheader2.ejs') %>
-<style>
-    .pagination-container {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-    }
-</style>
+    <style>
+        .pagination-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+    </style>
+    <style>
+        /* Container styling */
+        .filter-sort-container {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+        }
 
-<main class="main">
-	<div class="page-header text-center" style="background-image: url('userassets/images/page-header-bg.jpg')">
-        		<div class="container">
-					<br>
-					<br>
-					<br>
-					<br>
-        			<!-- <h1 class="page-title">Shopping Cart -->
-					<h1>Grid 3 Columns<span>SHOP</span></h1>
-        		</div>
-        	</div><!-- End .page-header -->
-    <div style="background-image: url('userassets/images/page-header-bg.jpg')">
-        <div class="container">
-            <!-- <h1 class="page-title">SHOP<span></span></h1> -->
-        </div>
-    </div><!-- End .page-header -->
-    <nav aria-label="breadcrumb" class="breadcrumb-nav mb-2">
-        <div class="container">
-            <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a href="index.html">Home</a></li>
-                <li class="breadcrumb-item"><a href="./shop">Shop</a></li>
-                <li class="breadcrumb-item active" aria-current="page">Grid 3 Columns</li>
-            </ol>
-        </div>
-    </nav><!-- End .breadcrumb-nav -->
+        /* Label styling */
+        .filter-sort-container label {
+            margin-right: 10px;
+            font-weight: bold;
+        }
 
-    <div class="page-content">
-        <div class="container">
-                    <div class="row">
-                        <% if (productData.length > 0) { %>
-                            <% for (let i = 0; i < productData.length; i++) { %>
+        /* Select styling */
+        .filter-sort-container select {
+            padding: 5px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            margin-right: 10px;
+        }
+
+        /* Button styling */
+        .filter-sort-container button {
+            background-color: #ffffff;
+            color: #cc6666;
+            padding: 5px 10px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        /* Button hover effect */
+        .filter-sort-container button:hover {
+            background-color: #cc6666;
+            color: #ffffff;
+        }
+    </style>
+
+    <main class="main">
+        <div class="page-header text-center" style="background-image: url('userassets/images/page-header-bg.jpg')">
+            <div class="container">
+                <br>
+                <br>
+                <br>
+                <br>
+                <!-- <h1 class="page-title">Shopping Cart -->
+                <h1>Grid 3 Columns<span>SHOP</span></h1>
+            </div>
+        </div><!-- End .page-header -->
+        <div style="background-image: url('userassets/images/page-header-bg.jpg')">
+            <div class="container">
+                <!-- <h1 class="page-title">SHOP<span></span></h1> -->
+            </div>
+        </div><!-- End .page-header -->
+        <nav aria-label="breadcrumb" class="breadcrumb-nav mb-2">
+            <div class="container">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="index.html">Home</a></li>
+                    <li class="breadcrumb-item"><a href="./shop">Shop</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">Grid 3 Columns</li>
+                </ol>
+                <br>
+                <div class="row" id="product-container">
+                    <div class="filter-sort-container">
+                        <label for="category">Category:</label>
+                        <select id="category">
+                            <option value="">All</option>
+                            <% category.forEach((data)=> { %>
+                                <option value="<%= data._id %>">
+                                    <%= data.name %>
+                                </option>
+                                <% }); %>
+                        </select>
+
+                        <label for="sort">Sort by:</label>
+                        <select id="sort">
+                            <option value="price-asc">Price: Low to High</option>
+                            <option value="price-desc">Price: High to Low</option>
+                            <!-- Add more sorting options as needed -->
+                        </select>
+
+                        <button onclick="applyFilters()">Apply Filters</button>
+                    </div>
+                </div>
+            </div>
+        </nav><!-- End .breadcrumb-nav -->
+
+
+        <div class="page-content">
+            <div class="container">
+                <div class="row">
+                    <% if (productData.length> 0) { %>
+                        <% let product=productData %>
+                            <% for (let i=0; i < product.length; i++) { %>
                                 <div class="col-6 col-md-4 col-lg-4">
                                     <div class="product product-7 text-center">
                                         <figure class="product-media">
                                             <span class="product-label label-new">New</span>
-											<a href="/product-details/<%= productData[i]._id %>">
-												<% if (productData[i].images.length > 0) { %>
-													<img src="/admin/img/<%= productData[i].images[0] %>" alt="Product image" class="product-image">
-												<% } else { %>
-													<img src="/path/to/default-image.jpg" alt="Product image" class="product-image">
-												<% } %>
-											</a>
+                                            <a href="/product-details/<%= product[i]._id %>">
+                                                <% if (product[i].images.length> 0) { %>
+                                                    <img src="/admin/img/<%= product[i].images[0] %>"
+                                                        alt="Product image" class="product-image">
+                                                    <% } else { %>
+                                                        <img src="/path/to/default-image.jpg" alt="Product image"
+                                                            class="product-image">
+                                                        <% } %>
+                                            </a>
 
                                             <div class="product-action-vertical">
-                                                <a onclick="show('<%= productData[i]._id %>')" class="btn-product-icon btn-wishlist btn-expandable" ><span>add to wishlist</span></a>
-                                                <a href="/quickView" class="btn-product-icon btn-quickview btn-expandable" title="Quick view"><span>Quick view</span></a>
+                                                <a onclick="show('<%= product[i]._id %>')"
+                                                    class="btn-product-icon btn-wishlist btn-expandable"><span>add to
+                                                        wishlist</span></a>
+                                                <a href="/quickView"
+                                                    class="btn-product-icon btn-quickview btn-expandable"
+                                                    title="Quick view"><span>Quick view</span></a>
                                             </div>
 
                                             <div class="product-action">
-                                                <a href="" onclick="AddToCart('<%= productData[i]._id %>')" class="btn-product btn-cart"><span>add to cart</span></a>
+                                                <a href="" onclick="AddToCart('<%= product[i]._id %>')"
+                                                    class="btn-product btn-cart"><span>add to cart</span></a>
                                             </div><!-- End .product-action -->
                                         </figure><!-- End .product-media -->
 
                                         <div class="product-body">
                                             <div class="product-cat">
-                                                <a href="#"><%= productData[i].productName %></a>
+                                                <a href="#">
+                                                    <%= product[i].productName %>
+                                                </a>
                                             </div><!-- End .product-cat -->
-                                            <h3 class="product-title"><a href="product.html"><%= productData[i].description %></a></h3><!-- End .product-title -->
+                                            <h3 class="product-title"><a href="#">
+                                                    <%= product[i].description %>
+                                                </a></h3><!-- End .product-title -->
                                             <div class="product-price">
-                                                ₹<%= productData[i].price %>
+                                                ₹<%= product[i].price %>
                                             </div><!-- End .product-price -->
 
                                             <div class="product-nav product-nav-thumbs">
-												<% for (let j = 0; j < productData[i].images.length; j++) { %>
-													<a href="#" class="<%= j === 0 ? 'active' : '' %>">
-														<img src="/productimages/<%= productData[i].images[j] %>" alt="product desc">
-													</a>
-													<% } %>
-												</div><!-- End .product-nav -->
-												
-											</div><!-- End .product-body -->
-										</div><!-- End .product -->
-									</div><!-- End .col-6 col-md-4 col-lg-4 -->
-									<% } %>
-									<% } %>
-								</div><!-- End .row -->
-							<!-- End .col-lg-9 -->
-							
-							<!-- Pagination Section -->
-							
-			<div class="sidebar-filter-overlay"></div><!-- End .sidebar-filter-overlay -->
-                <aside class="sidebar-shop sidebar-filter">
-					<div class="sidebar-filter-wrapper">
-						<div class="widget widget-clean">
-							<label><i class="icon-close"></i>Filters</label>
-							<a href="/shop">Clean All</a>
-					 </div><!--End .widget -->
-						<div class="widget widget-collapsible">
-							<h3 class="widget-title">
-								<a data-toggle="collapse" href="#widget-1" role="button" aria-expanded="true" aria-controls="widget-1">
-									Category
-								</a>
-							</h3><!-- End .widget-title -->
-							<div class="collapse show" id="widget-1">
-								
-								 <% if( category.length > 0 ){ 
-									category.forEach((data,i) => { %>
-								<div class="widget-body">
-									<div class="filter-items filter-items-count">
-										<div class="custom-control custom-checkbox">
-											<a class="text-dark" href="/filterCategory/<%= data.name %>" for="cat-1" >
-												<%= data.name %>
-												</a>
-												
-												
-												
-												</div>
-												</div>
-												</div>
-												<% }) }%>
-												
-												</div>
-												
-											// <div class="widget widget-collapsible">
-												// 	<h3 class="widget-title">
-													// 		<a data-toggle="collapse" href="#widget-2" role="button" aria-expanded="true" aria-controls="widget-2">
-						// 			Size
-						// 		</a>
-						// 	</h3>
-						
-						// 	<div class="collapse show" id="widget-2">
-							// 		<div class="widget-body">
-								// 			<div class="filter-items">
-									// 				<div class="filter-item">
-										// 					<div class="custom-control custom-checkbox">
-						// 						<input type="checkbox" class="custom-control-input" id="size-1">
-						// 						<label class="custom-control-label" for="size-1">XS</label>
-						// 					</div>
-						// 				</div>
-	
-						// 				<div class="filter-item">
-						// 					<div class="custom-control custom-checkbox">
-						// 						<input type="checkbox" class="custom-control-input" id="size-2">
-						// 						<label class="custom-control-label" for="size-2">S</label>
-						// 					</div>
-						// 				</div>
-	
-						// 				<div class="filter-item">
-						// 					<div class="custom-control custom-checkbox">
-						// 						<input type="checkbox" class="custom-control-input" checked id="size-3">
-						// 						<label class="custom-control-label" for="size-3">M</label>
-						// 					</div>
-						// 				</div>
-	
-						// 				<div class="filter-item">
-						// 					<div class="custom-control custom-checkbox">
-						// 						<input type="checkbox" class="custom-control-input" checked id="size-4">
-						// 						<label class="custom-control-label" for="size-4">L</label>
-						// 					</div>
-						// 				</div>
-						
-						// 				<div class="filter-item">
-						// 					<div class="custom-control custom-checkbox">
-						// 						<input type="checkbox" class="custom-control-input" id="size-5">
-						// 						<label class="custom-control-label" for="size-5">XL</label>
-						// 					</div>
-						// 				</div>
-	
-						// 				<div class="filter-item">
-						// 					<div class="custom-control custom-checkbox">
-						// 						<input type="checkbox" class="custom-control-input" id="size-6">
-						// 						<label class="custom-control-label" for="size-6">XXL</label>
-						// 					</div>
-						// 				</div>
-						// 			</div>
-						// 		</div>
-						// 	</div>	
-						// </div> 
-	
-					//  <div class="widget widget-collapsible">
-					// 		<h3 class="widget-title">
-					// 			<a data-toggle="collapse" href="#widget-3" role="button" aria-expanded="true" aria-controls="widget-3">
-					// 				Colour
-					// 			</a>
-					// 		</h3>
-					
-					// 		<div class="collapse show" id="widget-3">
-					// 			<div class="widget-body">
-					// 				<div class="filter-colors">
-					// 					<a href="#" style="background: #b87145;"><span class="sr-only">Color Name</span></a>
-					// 					<a href="#" style="background: #f0c04a;"><span class="sr-only">Color Name</span></a>
-					// 					<a href="#" style="background: #333333;"><span class="sr-only">Color Name</span></a>
-					// 					<a href="#" class="selected" style="background: #cc3333;"><span class="sr-only">Color Name</span></a>
-					// 					<a href="#" style="background: #3399cc;"><span class="sr-only">Color Name</span></a>
-					// 					<a href="#" style="background: #669933;"><span class="sr-only">Color Name</span></a>
-					// 					<a href="#" style="background: #f2719c;"><span class="sr-only">Color Name</span></a>
-					// 					<a href="#" style="background: #ebebeb;"><span class="sr-only">Color Name</span></a>
-					// 				</div>
-					// 			</div>
-					// 		</div>
-					// 	</div> 
-	
-					
-					//  <div class="widget widget-collapsible">
-					// 		<h3 class="widget-title">
-					// 			<a data-toggle="collapse" href="#widget-5" role="button" aria-expanded="true" aria-controls="widget-5">
-					// 				Price
-					// 			</a>
-					// 		</h3>
-							 
-					// 		<div class="collapse show" id="widget-5">
-					// 			<div class="widget-body">
-						// 				<div class="filter-price">
-					// 					<div class="filter-price-text">
-					// 						Price Range:
-					// 						<span id="filter-price-range"></span>
-					// 					</div>
-	
-					// 					<div id="price-slider"></div>
-					// 				</div>
-					// 			</div>
-					// 		</div>
-					// 	</div> 
-					</div>
-					</aside>
-					
-					<br>
-				<div class="pagination-container">
-					<nav aria-label="Page navigation">
-						<nav aria-label="">
-                <ul class="pagination  justify-content-center" >
-					<li class="page-item">
-						<% for(let i=1;i<=totalPages;i++){%>
-							<a class="page-link" href="?page=<%= i %>" ><%= i %></a>
-						<% } %>                  
-					</li> 
-                </ul>
-            </nav>
-					</nav>
-				</div>
+                                                <% for (let j=0; j < product[i].images.length; j++) { %>
+                                                    <a href="#" class="<%= j === 0 ? 'active' : '' %>">
+                                                        <img src="/productimages/<%= product[i].images[j] %>"
+                                                            alt="product desc">
+                                                    </a>
+                                                    <% } %>
+                                            </div><!-- End .product-nav -->
+
+                                        </div><!-- End .product-body -->
+                                    </div><!-- End .product -->
+                                </div><!-- End .col-6 col-md-4 col-lg-4 -->
+                                <% } %>
+                                    <% } %>
+                </div><!-- End .row -->
+                <!-- End .col-lg-9 -->
+
+                <!-- Pagination Section -->
+                <br>
+                <div class="pagination-container">
+                    <nav aria-label="Page navigation">
+                        <nav aria-label="">
+                            <ul class="pagination  justify-content-center">
+                                <li class="page-item">
+                                    <% for(let i=1;i<=totalPages;i++){%>
+                                        <a class="page-link" href="?page=<%= i %>">
+                                            <%= i %>
+                                        </a>
+                                        <% } %>
+                                </li>
+                            </ul>
+                        </nav>
+                    </nav>
+                </div>
 
 
-					
-		</div>
-	</div>
-</main>
-<div class="modal fade bd-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
-  <div class="modal-dialog modal-sm modal-dialog-centered">
-    <div class="modal-content" style="text-align: center;  background-color: rgb(255, 47, 47);height: 50%;">
-        
-        <span style="color: aliceblue;font-weight: 800;">Sorry, product in now out of stock</span> 
-         
-		</div>
-  </div>
-</div>
 
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script> <!-- Include SweetAlert library -->
+            </div>
+        </div>
+    </main>
+    <div class="modal fade bd-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog modal-sm modal-dialog-centered">
+            <div class="modal-content" style="text-align: center;  background-color: rgb(255, 47, 47);height: 50%;">
 
-<script>
-    function AddToCart(Id) {
-        $.ajax({
-            url: '/add-to-cart',
-            data: {
-                productId: Id
-            },
-            method: 'post',
-            success: (response) => {
-                if (response.status) {
-                    const cartMessage = document.getElementById('cart-message');
-                    cartMessage.style.display = 'block';
+                <span style="color: aliceblue;font-weight: 800;">Sorry, product in now out of stock</span>
 
-                    // Hide the message after 2 seconds
-                    setTimeout(() => {
-                        cartMessage.style.display = 'none';
-                    }, 2000);
+            </div>
+        </div>
+    </div>
 
-                    // Show Swal success message
-                    Swal.fire({
-                        position: 'top-end',
-                        icon: 'success',
-                        title: 'Product added to cart',
-                        showConfirmButton: false,
-                        timer: 1500
-                    }).then(() => {
-                        // Optionally, you can redirect to the cart page or perform any other action.
-                        // For example, you can redirect to the cart page like this:
-                        // window.location.href = '/cart';
-                    });
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script> <!-- Include SweetAlert library -->
+    <script>
+        function applyFilters() {
+            const selectedCategory = document.getElementById('category').value;
+            const selectedSort = document.getElementById('sort').value;
 
-                    if (response.success) {
-                        swal("Success", response.message, "success").then(() => {
-                            window.location.reload();
+            $.ajax({
+                url: '/apply-filters',
+                method: 'get',
+                data: {
+                    category: selectedCategory,
+                    sort: selectedSort
+                },
+                success: (response) => {
+                    if (response.status) {
+                        const productContainer = document.getElementById('product-container');
+                        productContainer.innerHTML = ''; // Clear existing products
+
+                        response.products.forEach((product) => {
+                            // Create a new product card element
+                            const productCard = document.createElement('div');
+                            productCard.className = 'col-6 col-md-4 col-lg-4';
+                            productCard.innerHTML = `
+                            <div class="product product-7 text-center">
+                                    <img src="${product.imageURL}" class="product-image">
+                                    <h3 class="product-title">${product.productName}</h3>
+                                    <p class="product-description">${product.description}</p>
+                                    <p class="product-price">₹${product.price}</p>
+                                    <!-- Add more product details as needed -->
+                            </div>
+                            `;
+
+                            // Append the new product card to the container
+                            productContainer.appendChild(productCard);
                         });
                     } else {
-                        swal("Error", response.message, "error");
+                        alert('Error applying filters');
                     }
-                } else {
-                    alert("Already existing in your cart ");
-                    Swal.fire({
-                        icon: 'error',
-                        title: 'Oops...',
-                        text: 'Item already exists in cart',
-                        timer: 1000
-                    });
+                },
+                error: (error) => {
+                    console.error(error);
+                    alert('Error applying filters');
                 }
-            }
-        });
-    }
-</script>
-
-
-
-
-<script>
-function sendData(e){
-    fetch('/search',{
-        method : 'post',
-        headers:{'Content-Type' :'application/json'},
-        body:JSON.stringify({payload:e.value})
-    }).then((res)=>{
-        return res.json()
-    }).then(data =>{
-        const suggestion = data.payload
-       Searchresult.innerHTML = "";
-       if(suggestion.length <1){
-        Searchresult.innerHTML = `<a href='/productview?`
-        +"<p> Sorry ,Nothing Found </p>"
-        return
-       }
-       suggestion.forEach((elem,i)=>{
-        if(elem.type == "product"){
-            console.log("<><><><><><> ",elem.name)
-            Searchresult.innerHTML = `<p class="text-muted m-0">${elem.type}</p>`
+            });
         }
-       })
-    })
-}
+    </script>
 
 
-function show(id){
+    <script>
+        function AddToCart(Id) {
+            $.ajax({
+                url: '/add-to-cart',
+                data: {
+                    productId: Id
+                },
+                method: 'post',
+                success: (response) => {
+                    if (response.status) {
+                        const cartMessage = document.getElementById('cart-message');
+                        cartMessage.style.display = 'block';
 
-       $.ajax({ 
-         url:"/wishList",
-         method:"post",
-         data:{
-          proId:id
-         },
-         success:(response)=>{
-          if(response.success){
-              swal.fire({
-                position:'center',
-                icon:'success',
-                title:'Product added to wishList',
-                showConfirmButton:true,
-                timer:1500,
-              })
-          } else {
-              swal.fire({
-                  position:'center',
-                  icon:"error",
-                  title:'Already added',
-                  timer:1500,
-              })
-            }
-         }
-  
-       })
-  
-    }
+                        // Hide the message after 2 seconds
+                        setTimeout(() => {
+                            cartMessage.style.display = 'none';
+                        }, 2000);
 
-</script>
+                        // Show Swal success message
+                        Swal.fire({
+                            position: 'top-end',
+                            icon: 'success',
+                            title: 'Product added to cart',
+                            showConfirmButton: false,
+                            timer: 1500
+                        }).then(() => {
+                            // Optionally, you can redirect to the cart page or perform any other action.
+                            // For example, you can redirect to the cart page like this:
+                            // window.location.href = '/cart';
+                        });
 
-<%- include('../user/partial/userfooter.ejs') %>
+                        if (response.success) {
+                            swal("Success", response.message, "success").then(() => {
+                                window.location.reload();
+                            });
+                        } else {
+                            swal("Error", response.message, "error");
+                        }
+                    } else {
+                        alert("Already existing in your cart ");
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Oops...',
+                            text: 'Item already exists in cart',
+                            timer: 1000
+                        });
+                    }
+                }
+            });
+        }
+    </script>
+
+
+
+
+    <script>
+        function sendData(e) {
+            fetch('/search', {
+                method: 'post',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ payload: e.value })
+            }).then((res) => {
+                return res.json()
+            }).then(data => {
+                const suggestion = data.payload
+                Searchresult.innerHTML = "";
+                if (suggestion.length < 1) {
+                    Searchresult.innerHTML = `<a href='/productview?`
+                        + "<p> Sorry ,Nothing Found </p>"
+                    return
+                }
+                suggestion.forEach((elem, i) => {
+                    if (elem.type == "product") {
+                        console.log("<><><><><><> ", elem.name)
+                        Searchresult.innerHTML = `<p class="text-muted m-0">${elem.type}</p>`
+                    }
+                })
+            })
+        }
+
+
+        function show(id) {
+
+            $.ajax({
+                url: "/wishList",
+                method: "post",
+                data: {
+                    proId: id
+                },
+                success: (response) => {
+                    if (response.success) {
+                        swal.fire({
+                            position: 'center',
+                            icon: 'success',
+                            title: 'Product added to wishList',
+                            showConfirmButton: true,
+                            timer: 1500,
+                        })
+                    } else {
+                        swal.fire({
+                            position: 'center',
+                            icon: "error",
+                            title: 'Already added',
+                            timer: 1500,
+                        })
+                    }
+                }
+
+            })
+
+        }
+
+    </script>
+
+    <%- include('../user/partial/userfooter.ejs') %>

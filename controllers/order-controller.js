@@ -61,7 +61,7 @@ const loadCheckout = async (req, res) => {
                 },
             },
         ]);
-
+          console.log(total,'..........................................................');
         if (addressdata && addressdata.addresses.length > 0) {
             const address = addressdata.addresses;
             const Total = total.length > 0 ? total[0].total : 0;
@@ -475,41 +475,41 @@ const loadInvoice = async (req, res) => {
 };
 
 const returnProduct = async (req,res) => {
-  console.log("entering to return product");
-   try {
-     try {
-       console.log(req.body);
-       const userId = req.session.userId
-       const id = req.body.orderId;
- 
-      
-       const updatedData = await orderdb.findOneAndUpdate(
-         { _id:id },
-         {
-           $set: {
-            status:'returned'
-           },
-         },
-         { new: true }
-       );
-         
-         const refunded = await User.updateOne(
-           { _id: req.session.userId },
-           { $inc: { wallet: updatedData.totalAmount } }
-         );
-   
-         res.json({success:true})
-   
-     } catch (error) {
-       console.log(error);
-     }
+ console.log("entering to return product");
+  try {
+    try {
+      console.log(req.body);
+      const userId = req.session.userId
+      const id = req.body.orderId;
+
      
-   } catch (error) { 
-     console.log(error.message);
-   }
- 
- 
- }
+      const updatedData = await orderdb.findOneAndUpdate(
+        { _id:id },
+        {
+          $set: {
+           status:'returned'
+          },
+        },
+        { new: true }
+      );
+        
+        const refunded = await User.updateOne(
+          { _id: req.session.userId },
+          { $inc: { wallet: updatedData.totalAmount } }
+        );
+  
+        res.json({success:true})
+  
+    } catch (error) {
+      console.log(error);
+    }
+    
+  } catch (error) { 
+    console.log(error.message);
+  }
+
+
+}
 module.exports = {
     loadCheckout,
     orderList,

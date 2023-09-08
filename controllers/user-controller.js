@@ -279,11 +279,11 @@ const sendVerifyMail = async (name, email, otp) => {
   }
 };
 
-const forgetpass = async (req, res, next) => {
+const forgetpass = async (req, res) => {
   try {
     res.render("forgetpass")
   } catch (error) {
-    next(error);
+    console.log(error,"error is in forget pass");
   }
 }
 
@@ -394,50 +394,48 @@ function escapeRegex(text) {
 
 const loadshop = async (req, res) => {
   try {
-    console.log(req.query,'queryyyyy');
+    console.log(req.query, 'queryyyyy');
     const search = req.query.search || '';
-
-    
     const page = req.query.page || 1;
-    const limit = 8; // Number of products per page
+    const limit = 8;
     const nameRegex = new RegExp(search, 'i');
-
 
     let products;
     let productCount;
 
-    if (req.query.search) {
-      // Perform the $text search using the search query
-      products = await Product.find({ list: true, $text: { $search: search } })
-        .skip((page - 1) * limit)
-        .limit(limit);
+    let sortOption; 
 
-      // Count documents matching the search query
-      productCount = await Product.countDocuments({
-        list: true,
-        $text: { $search: search }
-      });
+    if (req.query.sort) {
+      sortOption = req.query.sort;
+    }
+
+    console.log(sortOption,"sortoopptionnnnnn");
+    if (req.query.search) {
+      products = await Product.find({ list: true, $text: { $search: search } });
     } else {
       console.log(search, 'search.....');
-      products = await Product.find({ list: true })
-        .skip((page - 1) * limit)
-        .limit(limit);
-
-      // Count all documents
-      productCount = await Product.countDocuments({ list: true });
+      products = await Product.find({ list: true });
     }
-    const totalPages = Math.ceil(productCount / limit);
 
+    if (sortOption === 'price-asc') {
+      products.sort((a, b) => a.price - b.price);
+    } else if (sortOption === 'price-desc') {
+      products.sort((a, b) => b.price - a.price);
+    }
+
+    const totalPages = Math.ceil(products.length / limit);
+    products = products.slice((page - 1) * limit, page * limit);
 
     const data = await categorymodel.find({ is_active: true });
 
     res.render('shop', {
       productData: products,
       categoryId: data._id,
-      category:data,
+      category: data,
       totalPages: totalPages,
       currentPage: page,
       search: search,
+      selectedSort: sortOption, // Pass the selected sort option to the template
     });
   } catch (error) {
     console.log(error, "error is in load shop");
@@ -447,12 +445,13 @@ const loadshop = async (req, res) => {
 
 
 
+
 const filterCategory = async (req, res) => {
   try {
     const search = req.query.search || '';
     const page = req.query.page || 1;
-    const limit = 8; // Number of products per page
-
+    const limit = 8;
+    
     const categoryId = req.params.id;
 
     const productCount = await Product.countDocuments({
@@ -482,12 +481,44 @@ const filterCategory = async (req, res) => {
 
     res.render('shop', {
       totalPages: totalPages,
-      products: productData,
+      productData: productData,
       category: categories,
       currentPage: page,
     });
   } catch (error) {
     console.log(error.message);
+  }
+};
+
+const applyfilter = async (req, res) => {
+  try {
+      const selectedCategory = req.query.category;
+      const selectedSort = req.query.sort;
+      console.log("-----",selectedCategory);
+      console.log("-----",selectedSort);
+
+      // Use a filter object to build the query dynamically based on selected filters
+      const filter = {};
+      if (selectedCategory) {
+          filter.category = selectedCategory;
+      }
+
+      // Use a sort object to specify sorting order based on selected sort option
+      const sort = {};
+      if (selectedSort === 'price-asc') {
+          sort.price = 1;
+      } else if (selectedSort === 'price-desc') {
+          sort.price = -1;
+      }
+
+      // Use the filter and sort objects to query the database
+      const products = await Product.find(filter);
+      console.log('-----------------',products);
+
+      res.json({ status: true, products });
+  } catch (error) {
+      console.error(error, "error is in apply filter");
+      res.json({ status: false, error: 'Error applying filters' });
   }
 };
 
@@ -734,10 +765,8 @@ const walletHistory = async (req, res) => {
 
 const OrderList = async (req, res) => {
   try {
-    const id = req.session.userId
-
+    const orderId = req.body.orderId
     const orderDb = await Orderdb.find({ userId: req.session.userId }).populate('items.product');
-    console.log(orderDb,"order detail from ");
     res.render('listOrder', {
       orders: orderDb,
 
@@ -800,6 +829,7 @@ module.exports = {
   walletHistory,
   orderDetail,
   filterCategory,
+  applyfilter,
   // resendOTP,
 
 }
