@@ -156,7 +156,12 @@ const insertUser = async (req, res) => {
       // If the email is already registered, return an error response
       res.render('login', { message: "Email already registered." });
     }
-
+    if (req.body.password.length < 8 || !/\d/.test(req.body.password)) {
+      return res.render('login', { message: "Password must be at least 8 characters and contain at least one number." });
+    }
+    if (!/^\d{10}$/.test(req.body.mno)) {
+      return res.render('login', { message: "Mobile number must be a 10-digit number." });
+    }
     const user = await UserDb({
       name: req.body.name,
       email: req.body.email,
@@ -220,6 +225,11 @@ const verifyLogin = async (req, res) => {
     console.log('entered to verify login');
     const email = req.body.email;
     const password = req.body.password;
+
+    if (password.length < 8 || !/\d/.test(password)) {
+      res.render('login', { message: 'Password must be at least 8 characters and contain at least one number.' });
+      return;
+    }
 
     const userData = await UserDb.findOne({ email: email });
 
