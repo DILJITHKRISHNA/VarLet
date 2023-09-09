@@ -248,9 +248,11 @@ const quickview = async(req,res)=>{
     res.render('quickView',{product:productDAta, category:categories});
 
   } catch (error) {
+    res.render('500')
     console.log(error,"error is in quickview");
   }
 }
+
 module.exports={
 
    loadAddProduct,

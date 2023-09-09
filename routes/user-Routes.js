@@ -88,4 +88,6 @@ user_route.post('/applyCoupon',couponController.verifyCoupon)
 //quickview
 user_route.get('/quickView',productController.quickview)
 
+
+
 module.exports= user_route

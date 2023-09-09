@@ -36,7 +36,11 @@ app.use(express.urlencoded({extended:true}));
 
 // setting view engine
 app.set('view engine', 'ejs')
-app.set('views','./views')
+app.set('views','./views/admin')
+
+app.set('view engine', 'ejs')
+app.set('views','./views/user')
+
 
 const adminRoutes = require('./routes/admin-Route');
 app.use('/admin', adminRoutes)
@@ -44,7 +48,9 @@ app.use('/admin', adminRoutes)
 const userRoutes = require('./routes/user-Routes');
 app.use('/', userRoutes)
 
-
+app.use((req, res)=>{
+  res.render('404')
+  })
 
 // Block User Route
 app.post('/block-user', (req, res) => {

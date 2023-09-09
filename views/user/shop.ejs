@@ -204,7 +204,7 @@
         </div>
     </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script> <!-- Include SweetAlert library -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
     <script>
         function applyFilters() {
             const selectedCategory = document.getElementById('category').value;
@@ -252,57 +252,66 @@
     </script>
 
 
-    <script>
-        function AddToCart(Id) {
-            $.ajax({
-                url: '/add-to-cart',
-                data: {
-                    productId: Id
-                },
-                method: 'post',
-                success: (response) => {
-                    if (response.status) {
-                        const cartMessage = document.getElementById('cart-message');
-                        cartMessage.style.display = 'block';
+<script>
+    function AddToCart(Id) {
+        $.ajax({
+            url: '/add-to-cart',
+            data: {
+                productId: Id
+            },
+            method: 'post',
+            success: (response) => {
+                if (response.status) {
+                    const cartMessage = document.getElementById('cart-message');
+                    cartMessage.style.display = 'block';
 
-                        // Hide the message after 2 seconds
-                        setTimeout(() => {
-                            cartMessage.style.display = 'none';
-                        }, 2000);
+                    // Hide the message after 2 seconds
+                    setTimeout(() => {
+                        cartMessage.style.display = 'none';
+                    }, 2000);
 
-                        // Show Swal success message
+                    // Show Swal success message
+                    Swal.fire({
+                        position: 'top-end',
+                        icon: 'success',
+                        title: 'Product added to cart',
+                        showConfirmButton: false,
+                        timer: 1500
+                    }).then(() => {
+                        // Optionally, you can redirect to the cart page or perform any other action.
+                        // For example, you can redirect to the cart page like this:
+                        // window.location.href = '/cart';
+                    });
+
+                    if (response.success) {
                         Swal.fire({
-                            position: 'top-end',
                             icon: 'success',
-                            title: 'Product added to cart',
-                            showConfirmButton: false,
-                            timer: 1500
+                            title: 'Success',
+                            text: response.message
                         }).then(() => {
-                            // Optionally, you can redirect to the cart page or perform any other action.
-                            // For example, you can redirect to the cart page like this:
-                            // window.location.href = '/cart';
+                            window.location.reload();
                         });
-
-                        if (response.success) {
-                            swal("Success", response.message, "success").then(() => {
-                                window.location.reload();
-                            });
-                        } else {
-                            swal("Error", response.message, "error");
-                        }
                     } else {
-                        alert("Already existing in your cart ");
                         Swal.fire({
                             icon: 'error',
-                            title: 'Oops...',
-                            text: 'Item already exists in cart',
-                            timer: 1000
+                            title: 'Error',
+                            text: response.message
                         });
                     }
+                } else {
+                    alert("Already existing in your cart ");
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Oops...',
+                        text: 'Item already exists in cart',
+                        timer: 1000
+                    });
                 }
-            });
-        }
-    </script>
+            }
+        });
+    }
+</script>
+
 
 
 
