@@ -150,6 +150,7 @@
     <div class="modal-dialog" role="document">
       <div class="modal-content">
         <div class="modal-header" style="border-bottom:none;">
+            <!-- here the modal header title changes based on whether there are coupons available or not -->
         <% if(coupons.length > 0){%>
           <h5 class="modal-title" id="exampleModalLongTitle">Available coupons</h5>
           <%}else{%>
@@ -324,6 +325,7 @@ function applycoupon(amount){
     const code = document.getElementById('checkout-discount-input').value
    
    $.ajax({
+    //u give the url tht what u give in the route
        url:'/applyCoupon',
        data:{
         couponCode : code,

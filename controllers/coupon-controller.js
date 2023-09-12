@@ -21,10 +21,12 @@ const loadCoupon = async (req, res) => {
       const alreadyCoupon = await couponDb.findOne({
         couponCode: req.body.couponCode.trim(),
       });
-       console.log(alreadyCoupon,"already couponnnnnn");
+      console.log(alreadyCoupon,"already couponnnnnn");
       if (alreadyCoupon) {
+        //here it checks if a couponcode already exists in the couponDb
         res.redirect('/admin/couponList')
       } else {
+        //if it doesnt exist then it creats a new coupon db with data from the req.body
         const data = new couponDb({
           couponName: req.body.couponName,
           couponCode: req.body.couponCode.trim(),
