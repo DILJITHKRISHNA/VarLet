@@ -77,14 +77,6 @@
                                               <% } %>
                                               <h6 style="color: chocolate;"><span style="color:#000;">status:</span><%= order.status %></h6>
                                               <!-- Button trigger modal -->
-                                              <% if( data.status != "cancelled" || data.status != "Delivered" || data.status != "returned" ){ %>
-                                               <button type="button" class="btn btn-outline-danger" data-bs-toggle="modal" data-bs-target="#exampleModal" > Cancel </button>                          
-                                              
-                                                 <% }else{ %>
-
-                                                  <button type="button" class="btn btn-outline-danger" data-bs-toggle="modal" data-bs-target="#returnModal %>" > Return? </button>
-
-                                                  <% } %>
                                                    
                                       </div><!-- End .product-price -->
                                   </div><!-- End .product-body -->
