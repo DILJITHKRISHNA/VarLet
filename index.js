@@ -48,9 +48,12 @@ app.use('/admin', adminRoutes)
 const userRoutes = require('./routes/user-Routes');
 app.use('/', userRoutes)
 
-app.use((req, res)=>{
-  res.render('404')
-  })
+app.set('view engine', 'ejs'); // Use 'ejs' as the template engine
+app.set('views', path.join(__dirname, 'views'));
+
+app.get('*', (req, res) => {
+  res.render('404');
+});
 
 // Block User Route
 app.post('/block-user', (req, res) => {

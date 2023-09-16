@@ -194,22 +194,30 @@ const productUnList = async (req, res) => {
       res.status(500).json({ error: true, message: 'internal sever error' })
   }
 }
-const loadUserProduct = async(req,res)=>{
+const loadUserProduct = async (req, res) => {
   try {
-
     const id = req.params.id;
-   const productData = await Product.findOne({_id:id})
-    console.log(productData,'single product');
-    res.render('product',{
-      product:productData
-    })
+    const productData = await Product.findOne({ _id: id });
 
+    if (!productData) {
+      // Product not found, render the '404' page
+      res.render('404');
+      return; // Return early to prevent further execution
+    }
+
+    console.log(productData, 'single product');
+    res.render('product', {
+      product: productData,
+    });
   } catch (error) {
-    
-    console.log(error.message,"this is loadUserProduct");
-
+    res.render('404');
   }
-}
+};
+
+
+
+
+
 
 // ================image cropper page call==========================
 const imageCropper = async (req, res) => {
