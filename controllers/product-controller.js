@@ -211,6 +211,7 @@ const loadUserProduct = async (req, res) => {
     });
   } catch (error) {
     res.render('404');
+    console.log(error.message,"error is in load product");
   }
 };
 
