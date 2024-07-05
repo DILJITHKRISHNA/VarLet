@@ -1,11 +1,11 @@
 const mongoose=require("mongoose");
-//connecting to monogo db
 const express =require('express')
 const app =express()
 const session = require('express-session');
 const multer = require('multer');
 const upload = require('./middleware/multer');
-require ("dotenv").config()
+const env = require('dotenv')
+env.config()
 const nocache = require('nocache')
 app.use(session({
     secret: 'your-secret-key',
@@ -14,7 +14,8 @@ app.use(session({
   }));
   
 
-mongoose.connect("mongodb://127.0.0.1:27017/database_user").then((data)=>{
+// mongoose.connect("mongodb://127.0.0.1:27017/database_user").then((data)=>{
+mongoose.connect(process.env.mongodb).then((data)=>{
     
     console.log("mongodb is now connected");
 })
