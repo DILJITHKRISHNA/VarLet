@@ -78,7 +78,7 @@ const userLogout = async (req, res) => {
 
 const loadHome = async (req, res) => {
   console.log("heyy this is user home");
-  
+
   try {
     const product = await Product.find({})
 
@@ -112,7 +112,7 @@ const sendOTP = async (name, email, OTP) => {
       secure: true,
       auth: {
         user: "diljithkrishna327@gmail.com",
-        pass: 'ieqklurshqrwbrfm'
+        pass: 'kpbg jkin tmuz firs'
       }
     });
 
@@ -146,41 +146,38 @@ const sendOTP = async (name, email, OTP) => {
 const insertUser = async (req, res) => {
   try {
     console.log("insert user");
-    console.log(req.body);
+    console.log(req.body, "dddyyy");
 
     const spassword = await securepassword(req.body.password);
     // Check if the email is already registered
     const existingUser = await UserDb.findOne({ email: req.body.email });
 
     if (existingUser) {
-      // If the email is already registered, return an error response
       res.render('login', { message: "Email already registered." });
-    }
-    if (req.body.password.length < 8 || !/\d/.test(req.body.password)) {
+    } else if (req.body.password.length < 8 || !/\d/.test(req.body.password)) {
       return res.render('login', { message: "Password must be at least 8 characters and contain at least one number." });
-    }
-    if (!/^\d{10}$/.test(req.body.mno)) {
+    } else if (!/^\d{10}$/.test(req.body.mno)) {
       return res.render('login', { message: "Mobile number must be a 10-digit number." });
+    } else {
+      const user = await UserDb({
+        name: req.body.name,
+        email: req.body.email,
+        mobile: req.body.mno,
+        password: spassword,
+        is_verified: 0,
+      });
+      const userData = await user.save();
+      console.log("user Inserted");
+      req.session.user_id = userData._id;
+      console.log(req.session.user_id);
+      await sendOTP(user.name, user.email, OTP);
+
+      registerdEmail = user.email;
+
+      otp1 = OTP;
+
+      res.render("otp");
     }
-    const user = await UserDb({
-      name: req.body.name,
-      email: req.body.email,
-      mobile: req.body.mno,
-      password: spassword,
-
-      is_verified: 0,
-    });
-    const userData = await user.save();
-    console.log("user Inserted");
-    req.session.user_id = userData._id;
-    console.log(req.session.user_id);
-    await sendOTP(user.name, user.email, OTP);
-
-    registerdEmail = user.email;
-
-    otp1 = OTP;
-
-    res.render("otp");
 
 
   } catch (error) {
@@ -194,10 +191,7 @@ const insertUser = async (req, res) => {
 const verifyOTP = async (req, res) => {
 
   try {
-
-    console.log("this is otp check");
     const otp = req.body.otp;
-
 
     if (otp == otp1) {
       console.log(otp, "============================================");
@@ -205,14 +199,11 @@ const verifyOTP = async (req, res) => {
       const isVerified = await UserDb.findOneAndUpdate(
         { email: registerdEmail }, { $set: { is_verified: 1 } })
 
-      console.log(isVerified, "==========++++++++++++++++++++++++++++++++++");
       res.render('login')
-
-
-
+      
     } else {
       console.log('gg');
-      res.render('register', { messageFailed: 'Incorrect OTP' })
+      res.render('signup', { messageFailed: 'Incorrect OTP' })
     }
 
   } catch (error) {
@@ -265,12 +256,13 @@ const verifyLogin = async (req, res) => {
 
 
 const sendVerifyMail = async (name, email, otp) => {
+
   try {
     const transporter = nodemailer.createTransport({
       service: 'gmail',
       auth: {
         user: "diljithkrishna327@gmail.com",
-        pass: "ieqklurshqrwbrfm"
+        pass: "kpbg jkin tmuz firs"
       }
     });
 
@@ -293,7 +285,7 @@ const forgetpass = async (req, res) => {
   try {
     res.render("forgetpass")
   } catch (error) {
-    console.log(error,"error is in forget pass");
+    console.log(error, "error is in forget pass");
   }
 }
 
@@ -415,13 +407,13 @@ const loadshop = async (req, res) => {
     let products;
     let productCount;
 
-    let sortOption; 
+    let sortOption;
 
     if (req.query.sort) {
       sortOption = req.query.sort;
     }
-    
-    console.log(sortOption,"sortoopptionnnnnn");
+
+    console.log(sortOption, "sortoopptionnnnnn");
     if (req.query.search) {
       products = await Product.find({ list: true, $text: { $search: search } });
     } else {
@@ -436,9 +428,9 @@ const loadshop = async (req, res) => {
       products.sort((a, b) => a.price - b.price);
     } else if (sortOption === 'price-desc') {
       products.sort((a, b) => b.price - a.price);
-    }else if (req.query.category && req.query.sort) {
+    } else if (req.query.category && req.query.sort) {
 
-      products = await Product.find({ list: true, category: req.query.category,price:price}).sort({ price: 1 }); 
+      products = await Product.find({ list: true, category: req.query.category, price: price }).sort({ price: 1 });
     }
 
 
@@ -470,7 +462,7 @@ const filterCategory = async (req, res) => {
     const search = req.query.search || '';
     const page = req.query.page || 1;
     const limit = 8;
-    
+
     const categoryId = req.params.id;
 
     const productCount = await Product.countDocuments({
@@ -483,7 +475,7 @@ const filterCategory = async (req, res) => {
     });
 
     const totalPages = Math.ceil(productCount / limit);
-    console.log(totalPages,"totalpages");
+    console.log(totalPages, "totalpages");
 
     const productData = await Product.find({
       category: categoryId,
@@ -511,33 +503,33 @@ const filterCategory = async (req, res) => {
 
 const applyfilter = async (req, res) => {
   try {
-      const selectedCategory = req.query.category;
-      const selectedSort = req.query.sort;
-      console.log("-----",selectedCategory);
-      console.log("-----",selectedSort);
+    const selectedCategory = req.query.category;
+    const selectedSort = req.query.sort;
+    console.log("-----", selectedCategory);
+    console.log("-----", selectedSort);
 
-      // Use a filter object to build the query dynamically based on selected filters
-      const filter = {};
-      if (selectedCategory) {
-          filter.category = selectedCategory;
-      }
+    // Use a filter object to build the query dynamically based on selected filters
+    const filter = {};
+    if (selectedCategory) {
+      filter.category = selectedCategory;
+    }
 
-      // Use a sort object to specify sorting order based on selected sort option
-      const sort = {};
-      if (selectedSort === 'price-asc') {
-          sort.price = 1;
-      } else if (selectedSort === 'price-desc') {
-          sort.price = -1;
-      }
+    // Use a sort object to specify sorting order based on selected sort option
+    const sort = {};
+    if (selectedSort === 'price-asc') {
+      sort.price = 1;
+    } else if (selectedSort === 'price-desc') {
+      sort.price = -1;
+    }
 
-      // Use the filter and sort objects to query the database
-      const products = await Product.find(filter);
-      console.log('-----------------',products);
+    // Use the filter and sort objects to query the database
+    const products = await Product.find(filter);
+    console.log('-----------------', products);
 
-      res.json({ status: true, products });
+    res.json({ status: true, products });
   } catch (error) {
-      console.error(error, "error is in apply filter");
-      res.json({ status: false, error: 'Error applying filters' });
+    console.error(error, "error is in apply filter");
+    res.json({ status: false, error: 'Error applying filters' });
   }
 };
 

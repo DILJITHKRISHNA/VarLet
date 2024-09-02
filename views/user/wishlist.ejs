@@ -49,11 +49,11 @@
                             </td>
                             <td><span class="in-stock"><%= wish.productId.category %></span></td>
 
-                            <td style="font-size: large;"><a href="/product-details/<%= wish.productId._id %>" type="button" style="background-color: rgb(0, 0, 0);" >View</a></td>
+                            <td style="font-size: large;"><a href="/product-details/<%= wish.productId._id %>" type="button">View</a></td>
 
                          
                             <td style="width: 10vw;">
-                                    <a href="" onclick="AddToCart('<%= wish.productId._id %>')" class="btn-product btn-cart"><span style="background-color: black;">add to cart</span></a>
+                                    <a href="" onclick="AddToCart('<%= wish.productId._id %>')" class="btn-product btn-cart"><span >add to cart</span></a>
                             </td>
                             <td class="remove-col">
                                 <a href="/removeItem?id=<%= wish.productId._id %>">
